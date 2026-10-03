@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>تا بیست‌وهفتم</title>
+  <meta name="theme-color" content="#101115" />
+  <title>⌛ تا بیست‌وهفتم</title>
 
   <style>
     :root {
@@ -15,7 +16,6 @@
       --accent: #f3b84b;
       --accent-soft: rgba(243, 184, 75, 0.17);
       --cat: #25262d;
-      --cat-dark: #15161b;
       --pink: #ef8991;
     }
 
@@ -23,31 +23,37 @@
       box-sizing: border-box;
     }
 
+    html {
+      min-height: 100%;
+      background: var(--bg);
+    }
+
     body {
       margin: 0;
       min-height: 100vh;
-      overflow: hidden;
+      overflow-x: hidden;
       display: grid;
       place-items: center;
       color: var(--text);
-      font-family: Tahoma, "Vazirmatn", "IRANSans", Arial, sans-serif;
+      font-family: Tahoma, Vazirmatn, IRANSans, Arial, sans-serif;
       background:
         radial-gradient(circle at 18% 20%, rgba(243, 184, 75, 0.13), transparent 28%),
         radial-gradient(circle at 82% 72%, rgba(126, 112, 255, 0.12), transparent 32%),
         var(--bg);
     }
 
-    /* Background stars */
+    /* Animated star background */
     .stars,
     .stars::before,
     .stars::after {
-      position: absolute;
+      position: fixed;
       inset: 0;
       content: "";
       pointer-events: none;
     }
 
     .stars {
+      z-index: 0;
       opacity: 0.75;
       background-image:
         radial-gradient(circle, #fff 1px, transparent 1.5px),
@@ -68,19 +74,29 @@
     }
 
     @keyframes starsMove {
-      from { transform: translateY(0); }
-      to { transform: translateY(-95px); }
+      from {
+        transform: translateY(0);
+      }
+
+      to {
+        transform: translateY(-95px);
+      }
     }
 
     @keyframes starsMoveReverse {
-      from { transform: translateY(-20px); }
-      to { transform: translateY(100px); }
+      from {
+        transform: translateY(-20px);
+      }
+
+      to {
+        transform: translateY(100px);
+      }
     }
 
     .container {
-      width: min(92%, 830px);
       position: relative;
-      z-index: 2;
+      z-index: 1;
+      width: min(92%, 830px);
       padding: 24px;
     }
 
@@ -96,18 +112,20 @@
         0 25px 70px rgba(0, 0, 0, 0.38),
         inset 0 1px 0 rgba(255, 255, 255, 0.04);
       backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
     }
 
     .card::before {
       position: absolute;
-      content: "";
-      width: 310px;
-      height: 310px;
       top: -175px;
       right: -135px;
+      width: 310px;
+      height: 310px;
+      content: "";
       border-radius: 50%;
       background: var(--accent-soft);
       filter: blur(2px);
+      pointer-events: none;
     }
 
     .label {
@@ -145,8 +163,8 @@
 
     .countdown {
       position: relative;
-      direction: ltr;
       display: grid;
+      direction: ltr;
       grid-template-columns: repeat(4, 1fr);
       gap: 12px;
       max-width: 620px;
@@ -178,28 +196,28 @@
 
     .unit {
       display: block;
+      direction: rtl;
       margin-top: 10px;
       color: var(--muted);
       font-size: 0.78rem;
-      direction: rtl;
     }
 
+    /* Cat and moon scene */
     .cat-scene {
       position: relative;
+      display: flex;
+      align-items: end;
+      justify-content: center;
       height: 215px;
       margin-top: 25px;
-      display: flex;
-      justify-content: center;
-      align-items: end;
     }
 
-    /* Moon */
     .moon {
       position: absolute;
-      width: 105px;
-      height: 105px;
       top: 10px;
       right: 15%;
+      width: 105px;
+      height: 105px;
       border-radius: 50%;
       background: #f8dda0;
       box-shadow: 0 0 35px rgba(248, 221, 160, 0.35);
@@ -207,41 +225,70 @@
     }
 
     .moon::after {
-      content: "";
       position: absolute;
-      width: 105px;
-      height: 105px;
       top: -8px;
       right: -23px;
+      width: 105px;
+      height: 105px;
+      content: "";
       border-radius: 50%;
       background: rgba(28, 29, 36, 0.98);
     }
 
     @keyframes moonFloat {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-8px); }
+      0%,
+      100% {
+        transform: translateY(0);
+      }
+
+      50% {
+        transform: translateY(-8px);
+      }
     }
 
-    /* Cat */
+    .ground {
+      position: absolute;
+      bottom: 5px;
+      width: 260px;
+      height: 18px;
+      border-radius: 50%;
+      background: rgba(0, 0, 0, 0.32);
+      filter: blur(3px);
+    }
+
     .cat {
       position: relative;
+      z-index: 3;
       width: 175px;
       height: 170px;
-      z-index: 3;
       animation: catBreath 3.6s ease-in-out infinite;
     }
 
+    .cat.is-watching .head {
+      filter: drop-shadow(0 0 10px rgba(243, 184, 75, 0.18));
+    }
+
+    .cat.is-watching .eye {
+      box-shadow: 0 0 18px rgba(243, 184, 75, 0.82);
+    }
+
     @keyframes catBreath {
-      0%, 100% { transform: translateY(0) scale(1); }
-      50% { transform: translateY(-5px) scale(1.012); }
+      0%,
+      100% {
+        transform: translateY(0) scale(1);
+      }
+
+      50% {
+        transform: translateY(-5px) scale(1.012);
+      }
     }
 
     .tail {
       position: absolute;
+      bottom: 13px;
+      left: -27px;
       width: 79px;
       height: 121px;
-      left: -27px;
-      bottom: 13px;
       border: 17px solid var(--cat);
       border-right: 0;
       border-radius: 90px 0 0 90px;
@@ -251,16 +298,22 @@
     }
 
     @keyframes tailWave {
-      0%, 100% { transform: rotate(-25deg); }
-      50% { transform: rotate(7deg); }
+      0%,
+      100% {
+        transform: rotate(-25deg);
+      }
+
+      50% {
+        transform: rotate(7deg);
+      }
     }
 
     .body {
       position: absolute;
-      width: 117px;
-      height: 112px;
       bottom: 3px;
       left: 34px;
+      width: 117px;
+      height: 112px;
       border-radius: 56px 56px 30px 30px;
       background: linear-gradient(135deg, #34353e, var(--cat));
       box-shadow: inset -13px -6px 0 rgba(0, 0, 0, 0.17);
@@ -268,23 +321,24 @@
 
     .head {
       position: absolute;
-      width: 121px;
-      height: 105px;
       top: 12px;
       left: 32px;
       z-index: 2;
+      width: 121px;
+      height: 105px;
       border-radius: 47% 47% 43% 43%;
       background: linear-gradient(135deg, #363741, var(--cat));
+      transition: filter 0.2s ease;
     }
 
     .ear {
       position: absolute;
+      top: -28px;
       width: 0;
       height: 0;
-      top: -28px;
-      border-left: 27px solid transparent;
       border-right: 27px solid transparent;
       border-bottom: 56px solid var(--cat);
+      border-left: 27px solid transparent;
     }
 
     .ear.left {
@@ -298,15 +352,15 @@
     }
 
     .ear::after {
-      content: "";
       position: absolute;
       top: 18px;
       left: -12px;
       width: 0;
       height: 0;
-      border-left: 12px solid transparent;
+      content: "";
       border-right: 12px solid transparent;
       border-bottom: 27px solid #d37a83;
+      border-left: 12px solid transparent;
       opacity: 0.66;
     }
 
@@ -315,29 +369,47 @@
       top: 47px;
       width: 17px;
       height: 22px;
+      overflow: hidden;
       border-radius: 50%;
       background: var(--accent);
       box-shadow: 0 0 13px rgba(243, 184, 75, 0.6);
       animation: blink 4.5s infinite;
       transform-origin: center;
+      transition: box-shadow 0.2s ease;
     }
 
-    .eye.left { left: 29px; }
-    .eye.right { right: 29px; }
+    .eye.left {
+      left: 29px;
+    }
+
+    .eye.right {
+      right: 29px;
+    }
 
     @keyframes blink {
-      0%, 44%, 48%, 100% { transform: scaleY(1); }
-      46% { transform: scaleY(0.08); }
+      0%,
+      44%,
+      48%,
+      100% {
+        transform: scaleY(1);
+      }
+
+      46% {
+        transform: scaleY(0.08);
+      }
     }
 
     .pupil {
       position: absolute;
-      width: 5px;
+      top: 50%;
+      left: 50%;
+      width: 6px;
       height: 15px;
-      top: 3px;
-      left: 6px;
       border-radius: 50%;
       background: #16171c;
+      transform: translate(-50%, -50%);
+      transition: transform 0.08s linear;
+      will-change: transform;
     }
 
     .nose {
@@ -368,17 +440,34 @@
       background: rgba(246, 241, 232, 0.55);
     }
 
-    .whisker.w1 { left: -31px; transform: rotate(8deg); }
-    .whisker.w2 { left: -31px; top: 82px; transform: rotate(-8deg); }
-    .whisker.w3 { right: -31px; transform: rotate(-8deg); }
-    .whisker.w4 { right: -31px; top: 82px; transform: rotate(8deg); }
+    .whisker.w1 {
+      left: -31px;
+      transform: rotate(8deg);
+    }
+
+    .whisker.w2 {
+      top: 82px;
+      left: -31px;
+      transform: rotate(-8deg);
+    }
+
+    .whisker.w3 {
+      right: -31px;
+      transform: rotate(-8deg);
+    }
+
+    .whisker.w4 {
+      top: 82px;
+      right: -31px;
+      transform: rotate(8deg);
+    }
 
     .paws {
       position: absolute;
-      display: flex;
-      gap: 14px;
       bottom: -3px;
       left: 47px;
+      display: flex;
+      gap: 14px;
     }
 
     .paw {
@@ -386,16 +475,6 @@
       height: 18px;
       border-radius: 50% 50% 35% 35%;
       background: #30313a;
-    }
-
-    .ground {
-      position: absolute;
-      width: 260px;
-      height: 18px;
-      bottom: 5px;
-      border-radius: 50%;
-      background: rgba(0, 0, 0, 0.32);
-      filter: blur(3px);
     }
 
     .footer-note {
@@ -406,9 +485,13 @@
     }
 
     @media (max-width: 520px) {
+      .container {
+        padding: 14px;
+      }
+
       .card {
-        border-radius: 24px;
         padding: 27px 16px;
+        border-radius: 24px;
       }
 
       .countdown {
@@ -421,12 +504,23 @@
       }
 
       .cat-scene {
-        transform: scale(0.88);
         margin: 7px 0 -11px;
+        transform: scale(0.88);
       }
 
       .moon {
         right: 3%;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,
+      *::before,
+      *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
+        transition-duration: 0.01ms !important;
       }
     }
   </style>
@@ -447,31 +541,31 @@
 
       <div class="countdown" aria-label="شمارش معکوس">
         <div class="time-box">
-          <span class="number" id="days">00</span>
+          <span class="number" id="days">۰۰</span>
           <span class="unit">روز</span>
         </div>
 
         <div class="time-box">
-          <span class="number" id="hours">00</span>
+          <span class="number" id="hours">۰۰</span>
           <span class="unit">ساعت</span>
         </div>
 
         <div class="time-box">
-          <span class="number" id="minutes">00</span>
+          <span class="number" id="minutes">۰۰</span>
           <span class="unit">دقیقه</span>
         </div>
 
         <div class="time-box">
-          <span class="number" id="seconds">00</span>
+          <span class="number" id="seconds">۰۰</span>
           <span class="unit">ثانیه</span>
         </div>
       </div>
 
-      <div class="cat-scene" aria-label="گربه‌ی متحرک">
+      <div class="cat-scene" aria-label="گربه متحرک">
         <div class="moon"></div>
         <div class="ground"></div>
 
-        <div class="cat">
+        <div class="cat" id="cat">
           <div class="tail"></div>
           <div class="body"></div>
 
@@ -479,8 +573,13 @@
             <div class="ear left"></div>
             <div class="ear right"></div>
 
-            <div class="eye left"><div class="pupil"></div></div>
-            <div class="eye right"><div class="pupil"></div></div>
+            <div class="eye left">
+              <div class="pupil"></div>
+            </div>
+
+            <div class="eye right">
+              <div class="pupil"></div>
+            </div>
 
             <div class="nose"></div>
             <div class="mouth"></div>
@@ -498,15 +597,26 @@
         </div>
       </div>
 
-      <p class="footer-note">گربه منتظر رسیدن روز بیست‌وهفتم است 🐾</p>
+      <p class="footer-note">
+        گربه منتظر رسیدن روز بیست‌وهفتم است 🐾
+      </p>
     </section>
   </main>
 
   <script>
     const persianMonths = [
-      "فروردین", "اردیبهشت", "خرداد", "تیر",
-      "مرداد", "شهریور", "مهر", "آبان",
-      "آذر", "دی", "بهمن", "اسفند"
+      "فروردین",
+      "اردیبهشت",
+      "خرداد",
+      "تیر",
+      "مرداد",
+      "شهریور",
+      "مهر",
+      "آبان",
+      "آذر",
+      "دی",
+      "بهمن",
+      "اسفند"
     ];
 
     const numberFormatter = new Intl.NumberFormat("fa-IR", {
@@ -546,22 +656,20 @@
     }
 
     /*
-      Finds the next Gregorian date/time corresponding to:
-      Persian month day 27 at 00:00.
-
-      Strategy:
-      1. Start from today at local 00:00.
-      2. Move one Gregorian day at a time.
-      3. Check its Jalali calendar date.
-      This avoids requiring a separate Jalali-date library.
+      Finds the next local Gregorian midnight that corresponds to:
+      day 27 of a Persian/Jalali month.
     */
     function findNextPersian27th() {
       const now = new Date();
+
       let candidate = new Date(
         now.getFullYear(),
         now.getMonth(),
         now.getDate(),
-        0, 0, 0, 0
+        0,
+        0,
+        0,
+        0
       );
 
       for (let i = 0; i < 80; i++) {
@@ -593,6 +701,18 @@
         `${persianMonths[jalali.month - 1]} ${formatPersianNumber(jalali.year)}`;
     }
 
+    function updateTabTitle(days, hours, minutes, seconds) {
+      const h = String(hours).padStart(2, "0");
+      const m = String(minutes).padStart(2, "0");
+      const s = String(seconds).padStart(2, "0");
+
+      if (days > 0) {
+        document.title = `⌛ ${days}d ${h}:${m}:${s} | تا ۲۷م`;
+      } else {
+        document.title = `⌛ ${h}:${m}:${s} | تا ۲۷م`;
+      }
+    }
+
     function updateCountdown() {
       const now = new Date();
 
@@ -603,13 +723,18 @@
 
       const difference = Math.max(0, targetDate - now);
 
-      const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+      const days = Math.floor(
+        difference / (1000 * 60 * 60 * 24)
+      );
+
       const hours = Math.floor(
         (difference / (1000 * 60 * 60)) % 24
       );
+
       const minutes = Math.floor(
         (difference / (1000 * 60)) % 60
       );
+
       const seconds = Math.floor(
         (difference / 1000) % 60
       );
@@ -625,10 +750,76 @@
 
       document.getElementById("seconds").textContent =
         formatPersianNumber(String(seconds).padStart(2, "0"));
+
+      updateTabTitle(days, hours, minutes, seconds);
     }
+
+    /*
+      Cat cursor reaction:
+      The pupils follow the cursor only when it gets near the cat.
+    */
+    const cat = document.getElementById("cat");
+    const pupils = document.querySelectorAll(".pupil");
+
+    const REACTION_DISTANCE = 260;
+    const MAX_PUPIL_MOVE_X = 4;
+    const MAX_PUPIL_MOVE_Y = 5;
+
+    function resetCatEyes() {
+      pupils.forEach(pupil => {
+        pupil.style.transform = "translate(-50%, -50%)";
+      });
+
+      cat.classList.remove("is-watching");
+    }
+
+    document.addEventListener("mousemove", event => {
+      const catRect = cat.getBoundingClientRect();
+
+      const catCenterX = catRect.left + catRect.width / 2;
+      const catCenterY = catRect.top + catRect.height / 2;
+
+      const distanceX = event.clientX - catCenterX;
+      const distanceY = event.clientY - catCenterY;
+
+      const distance = Math.sqrt(
+        distanceX * distanceX +
+        distanceY * distanceY
+      );
+
+      if (distance > REACTION_DISTANCE) {
+        resetCatEyes();
+        return;
+      }
+
+      cat.classList.add("is-watching");
+
+      pupils.forEach(pupil => {
+        const eye = pupil.parentElement;
+        const eyeRect = eye.getBoundingClientRect();
+
+        const eyeCenterX = eyeRect.left + eyeRect.width / 2;
+        const eyeCenterY = eyeRect.top + eyeRect.height / 2;
+
+        const angle = Math.atan2(
+          event.clientY - eyeCenterY,
+          event.clientX - eyeCenterX
+        );
+
+        const moveX = Math.cos(angle) * MAX_PUPIL_MOVE_X;
+        const moveY = Math.sin(angle) * MAX_PUPIL_MOVE_Y;
+
+        pupil.style.transform =
+          `translate(calc(-50% + ${moveX}px), calc(-50% + ${moveY}px))`;
+      });
+    });
+
+    document.addEventListener("mouseleave", resetCatEyes);
+    document.addEventListener("touchend", resetCatEyes);
 
     updateTargetText();
     updateCountdown();
+
     setInterval(updateCountdown, 1000);
   </script>
 </body>
