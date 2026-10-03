@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>تا بیست‌وهفتم</title>
+
+  <style>
+    :root {
+      --bg: #101115;
+      --card: rgba(28, 29, 36, 0.72);
+      --line: rgba(255, 255, 255, 0.1);
+      --text: #f6f1e8;
+      --muted: #acaab3;
+      --accent: #f3b84b;
+      --accent-soft: rgba(243, 184, 75, 0.17);
+      --cat: #25262d;
+      --cat-dark: #15161b;
+      --pink: #ef8991;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      overflow: hidden;
+      display: grid;
+      place-items: center;
+      color: var(--text);
+      font-family: Tahoma, "Vazirmatn", "IRANSans", Arial, sans-serif;
+      background:
+        radial-gradient(circle at 18% 20%, rgba(243, 184, 75, 0.13), transparent 28%),
+        radial-gradient(circle at 82% 72%, rgba(126, 112, 255, 0.12), transparent 32%),
+        var(--bg);
+    }
+
+    /* Background stars */
+    .stars,
+    .stars::before,
+    .stars::after {
+      position: absolute;
+      inset: 0;
+      content: "";
+      pointer-events: none;
+    }
+
+    .stars {
+      opacity: 0.75;
+      background-image:
+        radial-gradient(circle, #fff 1px, transparent 1.5px),
+        radial-gradient(circle, #f3b84b 1px, transparent 1.5px),
+        radial-gradient(circle, #fff 0.8px, transparent 1.3px);
+      background-size: 95px 95px, 155px 155px, 63px 63px;
+      background-position: 0 0, 31px 47px, 11px 21px;
+      animation: starsMove 20s linear infinite;
+    }
+
+    .stars::before {
+      opacity: 0.35;
+      background-image:
+        radial-gradient(circle, #fff 1px, transparent 1.4px),
+        radial-gradient(circle, #a69cff 0.8px, transparent 1.3px);
+      background-size: 125px 125px, 89px 89px;
+      animation: starsMoveReverse 28s linear infinite;
+    }
+
+    @keyframes starsMove {
+      from { transform: translateY(0); }
+      to { transform: translateY(-95px); }
+    }
+
+    @keyframes starsMoveReverse {
+      from { transform: translateY(-20px); }
+      to { transform: translateY(100px); }
+    }
+
+    .container {
+      width: min(92%, 830px);
+      position: relative;
+      z-index: 2;
+      padding: 24px;
+    }
+
+    .card {
+      position: relative;
+      overflow: hidden;
+      padding: clamp(24px, 5vw, 52px);
+      border: 1px solid var(--line);
+      border-radius: 32px;
+      text-align: center;
+      background: var(--card);
+      box-shadow:
+        0 25px 70px rgba(0, 0, 0, 0.38),
+        inset 0 1px 0 rgba(255, 255, 255, 0.04);
+      backdrop-filter: blur(16px);
+    }
+
+    .card::before {
+      position: absolute;
+      content: "";
+      width: 310px;
+      height: 310px;
+      top: -175px;
+      right: -135px;
+      border-radius: 50%;
+      background: var(--accent-soft);
+      filter: blur(2px);
+    }
+
+    .label {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin: 0 0 12px;
+      color: var(--accent);
+      font-size: 0.9rem;
+      letter-spacing: 0.04em;
+    }
+
+    .label::before,
+    .label::after {
+      content: "✦";
+      font-size: 0.72rem;
+    }
+
+    h1 {
+      position: relative;
+      margin: 0;
+      font-size: clamp(1.75rem, 5vw, 3.25rem);
+      font-weight: 800;
+      line-height: 1.3;
+    }
+
+    .date-info {
+      position: relative;
+      min-height: 28px;
+      margin: 15px 0 32px;
+      color: var(--muted);
+      font-size: clamp(0.9rem, 2vw, 1.05rem);
+    }
+
+    .countdown {
+      position: relative;
+      direction: ltr;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      max-width: 620px;
+      margin: 0 auto;
+    }
+
+    .time-box {
+      padding: 18px 10px 14px;
+      border: 1px solid rgba(255, 255, 255, 0.09);
+      border-radius: 18px;
+      background: rgba(8, 9, 12, 0.28);
+      transition: transform 0.2s ease, border-color 0.2s ease;
+    }
+
+    .time-box:hover {
+      transform: translateY(-4px);
+      border-color: rgba(243, 184, 75, 0.45);
+    }
+
+    .number {
+      display: block;
+      color: var(--text);
+      font-family: "Courier New", monospace;
+      font-size: clamp(1.65rem, 5vw, 3.1rem);
+      font-weight: 800;
+      line-height: 1;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .unit {
+      display: block;
+      margin-top: 10px;
+      color: var(--muted);
+      font-size: 0.78rem;
+      direction: rtl;
+    }
+
+    .cat-scene {
+      position: relative;
+      height: 215px;
+      margin-top: 25px;
+      display: flex;
+      justify-content: center;
+      align-items: end;
+    }
+
+    /* Moon */
+    .moon {
+      position: absolute;
+      width: 105px;
+      height: 105px;
+      top: 10px;
+      right: 15%;
+      border-radius: 50%;
+      background: #f8dda0;
+      box-shadow: 0 0 35px rgba(248, 221, 160, 0.35);
+      animation: moonFloat 5s ease-in-out infinite;
+    }
+
+    .moon::after {
+      content: "";
+      position: absolute;
+      width: 105px;
+      height: 105px;
+      top: -8px;
+      right: -23px;
+      border-radius: 50%;
+      background: rgba(28, 29, 36, 0.98);
+    }
+
+    @keyframes moonFloat {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+
+    /* Cat */
+    .cat {
+      position: relative;
+      width: 175px;
+      height: 170px;
+      z-index: 3;
+      animation: catBreath 3.6s ease-in-out infinite;
+    }
+
+    @keyframes catBreath {
+      0%, 100% { transform: translateY(0) scale(1); }
+      50% { transform: translateY(-5px) scale(1.012); }
+    }
+
+    .tail {
+      position: absolute;
+      width: 79px;
+      height: 121px;
+      left: -27px;
+      bottom: 13px;
+      border: 17px solid var(--cat);
+      border-right: 0;
+      border-radius: 90px 0 0 90px;
+      transform: rotate(-25deg);
+      transform-origin: bottom right;
+      animation: tailWave 2.4s ease-in-out infinite;
+    }
+
+    @keyframes tailWave {
+      0%, 100% { transform: rotate(-25deg); }
+      50% { transform: rotate(7deg); }
+    }
+
+    .body {
+      position: absolute;
+      width: 117px;
+      height: 112px;
+      bottom: 3px;
+      left: 34px;
+      border-radius: 56px 56px 30px 30px;
+      background: linear-gradient(135deg, #34353e, var(--cat));
+      box-shadow: inset -13px -6px 0 rgba(0, 0, 0, 0.17);
+    }
+
+    .head {
+      position: absolute;
+      width: 121px;
+      height: 105px;
+      top: 12px;
+      left: 32px;
+      z-index: 2;
+      border-radius: 47% 47% 43% 43%;
+      background: linear-gradient(135deg, #363741, var(--cat));
+    }
+
+    .ear {
+      position: absolute;
+      width: 0;
+      height: 0;
+      top: -28px;
+      border-left: 27px solid transparent;
+      border-right: 27px solid transparent;
+      border-bottom: 56px solid var(--cat);
+    }
+
+    .ear.left {
+      left: 5px;
+      transform: rotate(-22deg);
+    }
+
+    .ear.right {
+      right: 5px;
+      transform: rotate(22deg);
+    }
+
+    .ear::after {
+      content: "";
+      position: absolute;
+      top: 18px;
+      left: -12px;
+      width: 0;
+      height: 0;
+      border-left: 12px solid transparent;
+      border-right: 12px solid transparent;
+      border-bottom: 27px solid #d37a83;
+      opacity: 0.66;
+    }
+
+    .eye {
+      position: absolute;
+      top: 47px;
+      width: 17px;
+      height: 22px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 13px rgba(243, 184, 75, 0.6);
+      animation: blink 4.5s infinite;
+      transform-origin: center;
+    }
+
+    .eye.left { left: 29px; }
+    .eye.right { right: 29px; }
+
+    @keyframes blink {
+      0%, 44%, 48%, 100% { transform: scaleY(1); }
+      46% { transform: scaleY(0.08); }
+    }
+
+    .pupil {
+      position: absolute;
+      width: 5px;
+      height: 15px;
+      top: 3px;
+      left: 6px;
+      border-radius: 50%;
+      background: #16171c;
+    }
+
+    .nose {
+      position: absolute;
+      top: 68px;
+      left: 54px;
+      width: 12px;
+      height: 8px;
+      border-radius: 55% 55% 70% 70%;
+      background: var(--pink);
+    }
+
+    .mouth {
+      position: absolute;
+      top: 76px;
+      left: 51px;
+      width: 19px;
+      height: 10px;
+      border-bottom: 2px solid #111218;
+      border-radius: 0 0 50% 50%;
+    }
+
+    .whisker {
+      position: absolute;
+      top: 72px;
+      width: 42px;
+      height: 1px;
+      background: rgba(246, 241, 232, 0.55);
+    }
+
+    .whisker.w1 { left: -31px; transform: rotate(8deg); }
+    .whisker.w2 { left: -31px; top: 82px; transform: rotate(-8deg); }
+    .whisker.w3 { right: -31px; transform: rotate(-8deg); }
+    .whisker.w4 { right: -31px; top: 82px; transform: rotate(8deg); }
+
+    .paws {
+      position: absolute;
+      display: flex;
+      gap: 14px;
+      bottom: -3px;
+      left: 47px;
+    }
+
+    .paw {
+      width: 28px;
+      height: 18px;
+      border-radius: 50% 50% 35% 35%;
+      background: #30313a;
+    }
+
+    .ground {
+      position: absolute;
+      width: 260px;
+      height: 18px;
+      bottom: 5px;
+      border-radius: 50%;
+      background: rgba(0, 0, 0, 0.32);
+      filter: blur(3px);
+    }
+
+    .footer-note {
+      position: relative;
+      margin: 2px 0 0;
+      color: rgba(246, 241, 232, 0.43);
+      font-size: 0.78rem;
+    }
+
+    @media (max-width: 520px) {
+      .card {
+        border-radius: 24px;
+        padding: 27px 16px;
+      }
+
+      .countdown {
+        gap: 8px;
+      }
+
+      .time-box {
+        padding: 15px 5px 12px;
+        border-radius: 14px;
+      }
+
+      .cat-scene {
+        transform: scale(0.88);
+        margin: 7px 0 -11px;
+      }
+
+      .moon {
+        right: 3%;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="stars"></div>
+
+  <main class="container">
+    <section class="card">
+      <p class="label">Cat Calendar</p>
+
+      <h1>تا بیست‌وهفتم ماه</h1>
+
+      <p class="date-info" id="targetDate">
+        در حال محاسبه تاریخ مقصد...
+      </p>
+
+      <div class="countdown" aria-label="شمارش معکوس">
+        <div class="time-box">
+          <span class="number" id="days">00</span>
+          <span class="unit">روز</span>
+        </div>
+
+        <div class="time-box">
+          <span class="number" id="hours">00</span>
+          <span class="unit">ساعت</span>
+        </div>
+
+        <div class="time-box">
+          <span class="number" id="minutes">00</span>
+          <span class="unit">دقیقه</span>
+        </div>
+
+        <div class="time-box">
+          <span class="number" id="seconds">00</span>
+          <span class="unit">ثانیه</span>
+        </div>
+      </div>
+
+      <div class="cat-scene" aria-label="گربه‌ی متحرک">
+        <div class="moon"></div>
+        <div class="ground"></div>
+
+        <div class="cat">
+          <div class="tail"></div>
+          <div class="body"></div>
+
+          <div class="head">
+            <div class="ear left"></div>
+            <div class="ear right"></div>
+
+            <div class="eye left"><div class="pupil"></div></div>
+            <div class="eye right"><div class="pupil"></div></div>
+
+            <div class="nose"></div>
+            <div class="mouth"></div>
+
+            <div class="whisker w1"></div>
+            <div class="whisker w2"></div>
+            <div class="whisker w3"></div>
+            <div class="whisker w4"></div>
+          </div>
+
+          <div class="paws">
+            <div class="paw"></div>
+            <div class="paw"></div>
+          </div>
+        </div>
+      </div>
+
+      <p class="footer-note">گربه منتظر رسیدن روز بیست‌وهفتم است 🐾</p>
+    </section>
+  </main>
+
+  <script>
+    const persianMonths = [
+      "فروردین", "اردیبهشت", "خرداد", "تیر",
+      "مرداد", "شهریور", "مهر", "آبان",
+      "آذر", "دی", "بهمن", "اسفند"
+    ];
+
+    const numberFormatter = new Intl.NumberFormat("fa-IR", {
+      useGrouping: false
+    });
+
+    function toEnglishDigits(value) {
+      return String(value)
+        .replace(/[۰-۹]/g, digit => "۰۱۲۳۴۵۶۷۸۹".indexOf(digit))
+        .replace(/[٠-٩]/g, digit => "٠١٢٣٤٥٦٧٨٩".indexOf(digit));
+    }
+
+    function getJalaliParts(date) {
+      const formatter = new Intl.DateTimeFormat(
+        "en-US-u-ca-persian-nu-latn",
+        {
+          year: "numeric",
+          month: "numeric",
+          day: "numeric"
+        }
+      );
+
+      const parts = formatter.formatToParts(date);
+      const values = {};
+
+      parts.forEach(part => {
+        if (part.type !== "literal") {
+          values[part.type] = Number(toEnglishDigits(part.value));
+        }
+      });
+
+      return {
+        year: values.year,
+        month: values.month,
+        day: values.day
+      };
+    }
+
+    /*
+      Finds the next Gregorian date/time corresponding to:
+      Persian month day 27 at 00:00.
+
+      Strategy:
+      1. Start from today at local 00:00.
+      2. Move one Gregorian day at a time.
+      3. Check its Jalali calendar date.
+      This avoids requiring a separate Jalali-date library.
+    */
+    function findNextPersian27th() {
+      const now = new Date();
+      let candidate = new Date(
+        now.getFullYear(),
+        now.getMonth(),
+        now.getDate(),
+        0, 0, 0, 0
+      );
+
+      for (let i = 0; i < 80; i++) {
+        const jalali = getJalaliParts(candidate);
+
+        if (jalali.day === 27 && candidate.getTime() > now.getTime()) {
+          return candidate;
+        }
+
+        candidate.setDate(candidate.getDate() + 1);
+      }
+
+      return null;
+    }
+
+    let targetDate = findNextPersian27th();
+
+    function formatPersianNumber(value) {
+      return numberFormatter.format(value);
+    }
+
+    function updateTargetText() {
+      if (!targetDate) return;
+
+      const jalali = getJalaliParts(targetDate);
+
+      document.getElementById("targetDate").textContent =
+        `مقصد: ساعت ۰۰:۰۰، ${formatPersianNumber(27)} ` +
+        `${persianMonths[jalali.month - 1]} ${formatPersianNumber(jalali.year)}`;
+    }
+
+    function updateCountdown() {
+      const now = new Date();
+
+      if (!targetDate || targetDate <= now) {
+        targetDate = findNextPersian27th();
+        updateTargetText();
+      }
+
+      const difference = Math.max(0, targetDate - now);
+
+      const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+      const hours = Math.floor(
+        (difference / (1000 * 60 * 60)) % 24
+      );
+      const minutes = Math.floor(
+        (difference / (1000 * 60)) % 60
+      );
+      const seconds = Math.floor(
+        (difference / 1000) % 60
+      );
+
+      document.getElementById("days").textContent =
+        formatPersianNumber(String(days).padStart(2, "0"));
+
+      document.getElementById("hours").textContent =
+        formatPersianNumber(String(hours).padStart(2, "0"));
+
+      document.getElementById("minutes").textContent =
+        formatPersianNumber(String(minutes).padStart(2, "0"));
+
+      document.getElementById("seconds").textContent =
+        formatPersianNumber(String(seconds).padStart(2, "0"));
+    }
+
+    updateTargetText();
+    updateCountdown();
+    setInterval(updateCountdown, 1000);
+  </script>
+</body>
+</html>
