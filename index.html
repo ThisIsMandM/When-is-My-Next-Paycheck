@@ -13,7 +13,7 @@
       --bg:#f4ecdf;--surface:#fffaf1;--surface-2:#eadcc8;--surface-3:#ddcbb3;
       --ink:#312b27;--muted:#70675f;--faint:#968b80;--line:rgb(49 43 39/.14);
       --accent:#a84833;--accent-hover:#873522;--accent-soft:#efd1c5;--sage:#5d7867;
-      --sage-soft:#d7e1d6;--gold:#d29a40;--cat:#1f1f1f;--cat-dark:#0b0b0b;--cat-cream:#3a3a3a;
+      --sage-soft:#d7e1d6;--gold:#d29a40;--cat:#3a3537;--cat-dark:#221f20;--cat-cream:#6a6264;
       --shadow:0 24px 70px rgb(69 48 33/.16),0 3px 12px rgb(69 48 33/.08);
       --font-display:'Boska',Georgia,serif;--font-body:'Satoshi',Arial,sans-serif;
       --text-xs:clamp(.75rem,.72rem + .1vw,.82rem);--text-sm:clamp(.875rem,.83rem + .15vw,.96rem);
@@ -26,7 +26,7 @@
       --bg:#211d1a;--surface:#2d2722;--surface-2:#3a312a;--surface-3:#493b31;
       --ink:#f5ebdf;--muted:#c6b7aa;--faint:#9f9084;--line:rgb(255 245 232/.14);
       --accent:#da7a5f;--accent-hover:#ef967c;--accent-soft:#53372e;--sage:#9ab7a2;--sage-soft:#34463a;
-      --gold:#e0ac58;--cat:#bb7952;--cat-dark:#713f2c;--cat-cream:#edc99e;
+      --gold:#e0ac58;--cat:#3a3537;--cat-dark:#221f20;--cat-cream:#6a6264;
       --shadow:0 24px 70px rgb(0 0 0/.32),0 3px 12px rgb(0 0 0/.22)
     }
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -60,7 +60,7 @@
     .cat-wrap{position:relative;width:250px;height:270px;transform-origin:50% 100%;animation:breathe 3.4s ease-in-out infinite;cursor:pointer;pointer-events:auto}.cat-wrap.pet-request{animation:arrival .8s var(--ease) both,breathe 3.4s .8s ease-in-out infinite}.cat-wrap.pet-request .front-paw.right{animation:reach 1.1s .8s var(--ease) infinite alternate}.cat-wrap.happy{animation:happy .65s var(--ease)}.cat-wrap.concerned .ear.left{transform:rotate(-38deg)}.cat-wrap.concerned .ear.right{transform:scaleX(-1) rotate(-38deg)}.cat-wrap.side-eye .pupil{transform:translate(4px,-1px)}
     .tail{position:absolute;left:4px;bottom:43px;width:110px;height:125px;border:25px solid var(--cat);border-right:0;border-bottom-color:transparent;border-radius:70% 0 0 60%;transform-origin:100% 100%;animation:tail 2.6s ease-in-out infinite}.cat-body{position:absolute;left:68px;bottom:28px;width:135px;height:150px;border-radius:52% 52% 35% 35%;background:var(--cat);box-shadow:inset -17px -9px 0 color-mix(in srgb,var(--cat-dark) 28%,transparent)}.chest{position:absolute;left:34px;bottom:6px;width:69px;height:92px;border-radius:55% 55% 30% 30%;background:var(--cat-cream);opacity:.83}
     .head{position:absolute;left:55px;top:28px;width:155px;height:137px;border-radius:48% 48% 43% 43%;background:var(--cat);box-shadow:inset -14px -7px 0 color-mix(in srgb,var(--cat-dark) 20%,transparent);transition:transform 220ms var(--ease)}.cat-wrap:hover .head{transform:translateY(-3px)}
-    .ear{position:absolute;top:-34px;width:68px;height:78px;background:var(--cat);clip-path:polygon(50% 0,100% 100%,0 100%);transform-origin:50% 90%;transition:transform 300ms var(--ease)}.ear.left{left:2px;transform:rotate(-13deg)}.ear.right{right:2px;transform:scaleX(-1) rotate(-13deg)}.ear::after{content:"";position:absolute;inset:20px 17px 8px;background:#d98b78;clip-path:inherit;opacity:.75}
+    .ear{position:absolute;top:-34px;width:68px;height:78px;background:var(--cat);clip-path:polygon(50% 0,100% 100%,0 100%);transform-origin:50% 90%;transition:transform 300ms var(--ease)}.ear.left{left:2px;transform:rotate(-13deg)}.ear.right{right:2px;transform:scaleX(-1) rotate(-13deg)}.ear::after{content:"";position:absolute;inset:20px 17px 8px; background:#8a7178;clip-path:inherit;opacity:.75}
     .muzzle{position:absolute;left:45px;top:77px;width:67px;height:43px;border-radius:50%;background:var(--cat-cream)}.nose{position:absolute;left:27px;top:4px;width:14px;height:10px;background:#70403c;clip-path:polygon(0 0,100% 0,50% 100%)}.mouth{position:absolute;left:32px;top:14px;width:1px;height:12px;background:var(--cat-dark)}.mouth::before,.mouth::after{content:"";position:absolute;top:7px;width:19px;height:10px;border-bottom:2px solid var(--cat-dark);border-radius:50%}.mouth::before{right:0}.mouth::after{left:0}
     .eye{position:absolute;top:58px;width:31px;height:31px;border-radius:50%;background:#dfb84c;overflow:hidden;box-shadow:0 0 0 3px color-mix(in srgb,var(--cat-dark) 38%,transparent);animation:blink 5.2s infinite}.eye.left{left:28px}.eye.right{right:28px}.pupil{position:absolute;left:10px;top:5px;width:11px;height:22px;border-radius:50%;background:#29221f;transition:transform 80ms linear}.pupil::after{content:"";position:absolute;left:2px;top:3px;width:3px;height:5px;border-radius:50%;background:white;opacity:.8}
     .brow{position:absolute;top:45px;width:27px;height:7px;border-top:3px solid var(--cat-dark);border-radius:50%;opacity:0;transition:opacity 200ms,transform 200ms}.brow.left{left:27px}.brow.right{right:27px}.concerned .brow{opacity:1}.concerned .brow.left{transform:rotate(12deg)}.concerned .brow.right{transform:rotate(-12deg)}
