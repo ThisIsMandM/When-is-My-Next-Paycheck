@@ -1,826 +1,183 @@
-<!DOCTYPE html>
-<html lang="fa" dir="rtl">
+<!doctype html>
+<html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="theme-color" content="#101115" />
-  <title>⌛ تا حقوق بعدیم</title>
-
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#f4ecdf">
+  <meta name="description" content="A playful kitten checks in on your spending while counting down to the next 27th of the Persian calendar.">
+  <title>Until Next Paycheck</title>
+  <link rel="preconnect" href="https://api.fontshare.com">
+  <link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700&f[]=boska@500,700&display=swap" rel="stylesheet">
   <style>
-    :root {
-      --bg: #101115;
-      --card: rgba(28, 29, 36, 0.72);
-      --line: rgba(255, 255, 255, 0.1);
-      --text: #f6f1e8;
-      --muted: #acaab3;
-      --accent: #f3b84b;
-      --accent-soft: rgba(243, 184, 75, 0.17);
-      --cat: #25262d;
-      --pink: #ef8991;
+    :root,[data-theme="light"]{
+      --bg:#f4ecdf;--surface:#fffaf1;--surface-2:#eadcc8;--surface-3:#ddcbb3;
+      --ink:#312b27;--muted:#70675f;--faint:#968b80;--line:rgb(49 43 39/.14);
+      --accent:#a84833;--accent-hover:#873522;--accent-soft:#efd1c5;--sage:#5d7867;
+      --sage-soft:#d7e1d6;--gold:#d29a40;--cat:#a96946;--cat-dark:#77452f;--cat-cream:#e8c59a;
+      --shadow:0 24px 70px rgb(69 48 33/.16),0 3px 12px rgb(69 48 33/.08);
+      --font-display:'Boska',Georgia,serif;--font-body:'Satoshi',Arial,sans-serif;
+      --text-xs:clamp(.75rem,.72rem + .1vw,.82rem);--text-sm:clamp(.875rem,.83rem + .15vw,.96rem);
+      --text-base:clamp(1rem,.96rem + .2vw,1.1rem);--text-lg:clamp(1.15rem,1rem + .55vw,1.45rem);
+      --text-xl:clamp(1.75rem,1.3rem + 1.5vw,2.6rem);--text-2xl:clamp(2.3rem,1.5rem + 3vw,4.4rem);
+      --s1:.25rem;--s2:.5rem;--s3:.75rem;--s4:1rem;--s5:1.25rem;--s6:1.5rem;--s8:2rem;--s10:2.5rem;--s12:3rem;
+      --r-sm:.5rem;--r-md:.75rem;--r-lg:1rem;--r-xl:1.5rem;--ease:cubic-bezier(.16,1,.3,1);
     }
-
-    * {
-      box-sizing: border-box;
+    [data-theme="dark"]{
+      --bg:#211d1a;--surface:#2d2722;--surface-2:#3a312a;--surface-3:#493b31;
+      --ink:#f5ebdf;--muted:#c6b7aa;--faint:#9f9084;--line:rgb(255 245 232/.14);
+      --accent:#da7a5f;--accent-hover:#ef967c;--accent-soft:#53372e;--sage:#9ab7a2;--sage-soft:#34463a;
+      --gold:#e0ac58;--cat:#bb7952;--cat-dark:#713f2c;--cat-cream:#edc99e;
+      --shadow:0 24px 70px rgb(0 0 0/.32),0 3px 12px rgb(0 0 0/.22)
     }
-
-    html {
-      min-height: 100%;
-      background: var(--bg);
-    }
-
-    body {
-      margin: 0;
-      min-height: 100vh;
-      overflow-x: hidden;
-      display: grid;
-      place-items: center;
-      color: var(--text);
-      font-family: Tahoma, Vazirmatn, IRANSans, Arial, sans-serif;
-      background:
-        radial-gradient(circle at 18% 20%, rgba(243, 184, 75, 0.13), transparent 28%),
-        radial-gradient(circle at 82% 72%, rgba(126, 112, 255, 0.12), transparent 32%),
-        var(--bg);
-    }
-
-    /* Animated star background */
-    .stars,
-    .stars::before,
-    .stars::after {
-      position: fixed;
-      inset: 0;
-      content: "";
-      pointer-events: none;
-    }
-
-    .stars {
-      z-index: 0;
-      opacity: 0.75;
-      background-image:
-        radial-gradient(circle, #fff 1px, transparent 1.5px),
-        radial-gradient(circle, #f3b84b 1px, transparent 1.5px),
-        radial-gradient(circle, #fff 0.8px, transparent 1.3px);
-      background-size: 95px 95px, 155px 155px, 63px 63px;
-      background-position: 0 0, 31px 47px, 11px 21px;
-      animation: starsMove 20s linear infinite;
-    }
-
-    .stars::before {
-      opacity: 0.35;
-      background-image:
-        radial-gradient(circle, #fff 1px, transparent 1.4px),
-        radial-gradient(circle, #a69cff 0.8px, transparent 1.3px);
-      background-size: 125px 125px, 89px 89px;
-      animation: starsMoveReverse 28s linear infinite;
-    }
-
-    @keyframes starsMove {
-      from {
-        transform: translateY(0);
-      }
-
-      to {
-        transform: translateY(-95px);
-      }
-    }
-
-    @keyframes starsMoveReverse {
-      from {
-        transform: translateY(-20px);
-      }
-
-      to {
-        transform: translateY(100px);
-      }
-    }
-
-    .container {
-      position: relative;
-      z-index: 1;
-      width: min(92%, 830px);
-      padding: 24px;
-    }
-
-    .card {
-      position: relative;
-      overflow: hidden;
-      padding: clamp(24px, 5vw, 52px);
-      border: 1px solid var(--line);
-      border-radius: 32px;
-      text-align: center;
-      background: var(--card);
-      box-shadow:
-        0 25px 70px rgba(0, 0, 0, 0.38),
-        inset 0 1px 0 rgba(255, 255, 255, 0.04);
-      backdrop-filter: blur(16px);
-      -webkit-backdrop-filter: blur(16px);
-    }
-
-    .card::before {
-      position: absolute;
-      top: -175px;
-      right: -135px;
-      width: 310px;
-      height: 310px;
-      content: "";
-      border-radius: 50%;
-      background: var(--accent-soft);
-      filter: blur(2px);
-      pointer-events: none;
-    }
-
-    .label {
-      position: relative;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      margin: 0 0 12px;
-      color: var(--accent);
-      font-size: 0.9rem;
-      letter-spacing: 0.04em;
-    }
-
-    .label::before,
-    .label::after {
-      content: "✦";
-      font-size: 0.72rem;
-    }
-
-    h1 {
-      position: relative;
-      margin: 0;
-      font-size: clamp(1.75rem, 5vw, 3.25rem);
-      font-weight: 800;
-      line-height: 1.3;
-    }
-
-    .date-info {
-      position: relative;
-      min-height: 28px;
-      margin: 15px 0 32px;
-      color: var(--muted);
-      font-size: clamp(0.9rem, 2vw, 1.05rem);
-    }
-
-    .countdown {
-      position: relative;
-      display: grid;
-      direction: ltr;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 12px;
-      max-width: 620px;
-      margin: 0 auto;
-    }
-
-    .time-box {
-      padding: 18px 10px 14px;
-      border: 1px solid rgba(255, 255, 255, 0.09);
-      border-radius: 18px;
-      background: rgba(8, 9, 12, 0.28);
-      transition: transform 0.2s ease, border-color 0.2s ease;
-    }
-
-    .time-box:hover {
-      transform: translateY(-4px);
-      border-color: rgba(243, 184, 75, 0.45);
-    }
-
-    .number {
-      display: block;
-      color: var(--text);
-      font-family: "Courier New", monospace;
-      font-size: clamp(1.65rem, 5vw, 3.1rem);
-      font-weight: 800;
-      line-height: 1;
-      font-variant-numeric: tabular-nums;
-    }
-
-    .unit {
-      display: block;
-      direction: rtl;
-      margin-top: 10px;
-      color: var(--muted);
-      font-size: 0.78rem;
-    }
-
-    /* Cat and moon scene */
-    .cat-scene {
-      position: relative;
-      display: flex;
-      align-items: end;
-      justify-content: center;
-      height: 215px;
-      margin-top: 25px;
-    }
-
-    .moon {
-      position: absolute;
-      top: 10px;
-      right: 15%;
-      width: 105px;
-      height: 105px;
-      border-radius: 50%;
-      background: #f8dda0;
-      box-shadow: 0 0 35px rgba(248, 221, 160, 0.35);
-      animation: moonFloat 5s ease-in-out infinite;
-    }
-
-    .moon::after {
-      position: absolute;
-      top: -8px;
-      right: -23px;
-      width: 105px;
-      height: 105px;
-      content: "";
-      border-radius: 50%;
-      background: rgba(28, 29, 36, 0.98);
-    }
-
-    @keyframes moonFloat {
-      0%,
-      100% {
-        transform: translateY(0);
-      }
-
-      50% {
-        transform: translateY(-8px);
-      }
-    }
-
-    .ground {
-      position: absolute;
-      bottom: 5px;
-      width: 260px;
-      height: 18px;
-      border-radius: 50%;
-      background: rgba(0, 0, 0, 0.32);
-      filter: blur(3px);
-    }
-
-    .cat {
-      position: relative;
-      z-index: 3;
-      width: 175px;
-      height: 170px;
-      animation: catBreath 3.6s ease-in-out infinite;
-    }
-
-    .cat.is-watching .head {
-      filter: drop-shadow(0 0 10px rgba(243, 184, 75, 0.18));
-    }
-
-    .cat.is-watching .eye {
-      box-shadow: 0 0 18px rgba(243, 184, 75, 0.82);
-    }
-
-    @keyframes catBreath {
-      0%,
-      100% {
-        transform: translateY(0) scale(1);
-      }
-
-      50% {
-        transform: translateY(-5px) scale(1.012);
-      }
-    }
-
-    .tail {
-      position: absolute;
-      bottom: 13px;
-      left: -27px;
-      width: 79px;
-      height: 121px;
-      border: 17px solid var(--cat);
-      border-right: 0;
-      border-radius: 90px 0 0 90px;
-      transform: rotate(-25deg);
-      transform-origin: bottom right;
-      animation: tailWave 2.4s ease-in-out infinite;
-    }
-
-    @keyframes tailWave {
-      0%,
-      100% {
-        transform: rotate(-25deg);
-      }
-
-      50% {
-        transform: rotate(7deg);
-      }
-    }
-
-    .body {
-      position: absolute;
-      bottom: 3px;
-      left: 34px;
-      width: 117px;
-      height: 112px;
-      border-radius: 56px 56px 30px 30px;
-      background: linear-gradient(135deg, #34353e, var(--cat));
-      box-shadow: inset -13px -6px 0 rgba(0, 0, 0, 0.17);
-    }
-
-    .head {
-      position: absolute;
-      top: 12px;
-      left: 32px;
-      z-index: 2;
-      width: 121px;
-      height: 105px;
-      border-radius: 47% 47% 43% 43%;
-      background: linear-gradient(135deg, #363741, var(--cat));
-      transition: filter 0.2s ease;
-    }
-
-    .ear {
-      position: absolute;
-      top: -28px;
-      width: 0;
-      height: 0;
-      border-right: 27px solid transparent;
-      border-bottom: 56px solid var(--cat);
-      border-left: 27px solid transparent;
-    }
-
-    .ear.left {
-      left: 5px;
-      transform: rotate(-22deg);
-    }
-
-    .ear.right {
-      right: 5px;
-      transform: rotate(22deg);
-    }
-
-    .ear::after {
-      position: absolute;
-      top: 18px;
-      left: -12px;
-      width: 0;
-      height: 0;
-      content: "";
-      border-right: 12px solid transparent;
-      border-bottom: 27px solid #d37a83;
-      border-left: 12px solid transparent;
-      opacity: 0.66;
-    }
-
-    .eye {
-      position: absolute;
-      top: 47px;
-      width: 17px;
-      height: 22px;
-      overflow: hidden;
-      border-radius: 50%;
-      background: var(--accent);
-      box-shadow: 0 0 13px rgba(243, 184, 75, 0.6);
-      animation: blink 4.5s infinite;
-      transform-origin: center;
-      transition: box-shadow 0.2s ease;
-    }
-
-    .eye.left {
-      left: 29px;
-    }
-
-    .eye.right {
-      right: 29px;
-    }
-
-    @keyframes blink {
-      0%,
-      44%,
-      48%,
-      100% {
-        transform: scaleY(1);
-      }
-
-      46% {
-        transform: scaleY(0.08);
-      }
-    }
-
-    .pupil {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      width: 6px;
-      height: 15px;
-      border-radius: 50%;
-      background: #16171c;
-      transform: translate(-50%, -50%);
-      transition: transform 0.08s linear;
-      will-change: transform;
-    }
-
-    .nose {
-      position: absolute;
-      top: 68px;
-      left: 54px;
-      width: 12px;
-      height: 8px;
-      border-radius: 55% 55% 70% 70%;
-      background: var(--pink);
-    }
-
-    .mouth {
-      position: absolute;
-      top: 76px;
-      left: 51px;
-      width: 19px;
-      height: 10px;
-      border-bottom: 2px solid #111218;
-      border-radius: 0 0 50% 50%;
-    }
-
-    .whisker {
-      position: absolute;
-      top: 72px;
-      width: 42px;
-      height: 1px;
-      background: rgba(246, 241, 232, 0.55);
-    }
-
-    .whisker.w1 {
-      left: -31px;
-      transform: rotate(8deg);
-    }
-
-    .whisker.w2 {
-      top: 82px;
-      left: -31px;
-      transform: rotate(-8deg);
-    }
-
-    .whisker.w3 {
-      right: -31px;
-      transform: rotate(-8deg);
-    }
-
-    .whisker.w4 {
-      top: 82px;
-      right: -31px;
-      transform: rotate(8deg);
-    }
-
-    .paws {
-      position: absolute;
-      bottom: -3px;
-      left: 47px;
-      display: flex;
-      gap: 14px;
-    }
-
-    .paw {
-      width: 28px;
-      height: 18px;
-      border-radius: 50% 50% 35% 35%;
-      background: #30313a;
-    }
-
-    .footer-note {
-      position: relative;
-      margin: 2px 0 0;
-      color: rgba(246, 241, 232, 0.43);
-      font-size: 0.78rem;
-    }
-
-    @media (max-width: 520px) {
-      .container {
-        padding: 14px;
-      }
-
-      .card {
-        padding: 27px 16px;
-        border-radius: 24px;
-      }
-
-      .countdown {
-        gap: 8px;
-      }
-
-      .time-box {
-        padding: 15px 5px 12px;
-        border-radius: 14px;
-      }
-
-      .cat-scene {
-        margin: 7px 0 -11px;
-        transform: scale(0.88);
-      }
-
-      .moon {
-        right: 3%;
-      }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      *,
-      *::before,
-      *::after {
-        animation-duration: 0.01ms !important;
-        animation-iteration-count: 1 !important;
-        scroll-behavior: auto !important;
-        transition-duration: 0.01ms !important;
-      }
-    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{-webkit-text-size-adjust:none;text-size-adjust:none;-webkit-font-smoothing:antialiased}
+    body{min-height:100dvh;overflow-x:hidden;font:var(--text-base)/1.55 var(--font-body);color:var(--ink);background:var(--bg)}
+    button{font:inherit;color:inherit;border:0;cursor:pointer}button:focus-visible,[role="button"]:focus-visible{outline:3px solid var(--gold);outline-offset:4px}
+    .skip{position:fixed;left:var(--s4);top:-5rem;z-index:100;padding:var(--s3) var(--s4);background:var(--ink);color:var(--bg);border-radius:var(--r-sm)}.skip:focus{top:var(--s4)}
+    .scene{position:fixed;inset:0;overflow:hidden;pointer-events:none;background:
+      radial-gradient(circle at 15% 14%,color-mix(in srgb,var(--gold) 16%,transparent) 0 10rem,transparent 24rem),
+      radial-gradient(circle at 82% 80%,color-mix(in srgb,var(--sage) 14%,transparent) 0 12rem,transparent 30rem)}
+    .grain{position:absolute;inset:0;opacity:.16;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.18'/%3E%3C/svg%3E")}
+    .sun{position:absolute;right:7vw;top:8vh;width:clamp(5rem,11vw,9rem);aspect-ratio:1;border:1px solid color-mix(in srgb,var(--gold) 35%,transparent);border-radius:50%;box-shadow:0 0 0 1.4rem color-mix(in srgb,var(--gold) 5%,transparent),0 0 0 3rem color-mix(in srgb,var(--gold) 3%,transparent)}
+    .plant{position:absolute;left:3vw;bottom:-1rem;width:9rem;height:13rem;opacity:.36}.leaf{position:absolute;bottom:0;left:50%;width:3.2rem;height:8rem;border-radius:100% 0 100% 0;background:var(--sage);transform-origin:bottom}.leaf:nth-child(1){transform:rotate(-34deg)}.leaf:nth-child(2){transform:translateX(-50%) rotate(-5deg);height:11rem}.leaf:nth-child(3){transform:rotate(39deg);height:9rem}
+    .shell{position:relative;z-index:2;width:min(1120px,calc(100% - 2rem));min-height:100dvh;margin:auto;display:grid;align-items:center;padding:var(--s8) 0}
+    .topbar{position:absolute;top:var(--s5);left:0;right:0;display:flex;align-items:center;justify-content:space-between;gap:var(--s4)}
+    .brand{display:flex;align-items:center;gap:var(--s3);font-weight:700;font-size:var(--text-sm);letter-spacing:.04em}.brand svg{width:2rem;height:2rem;color:var(--accent)}
+    .tools{display:flex;align-items:center;gap:var(--s2)}.icon-btn{width:44px;height:44px;display:grid;place-items:center;border:1px solid var(--line);border-radius:50%;background:color-mix(in srgb,var(--surface) 78%,transparent);transition:transform 180ms var(--ease),background 180ms var(--ease)}.icon-btn:hover{transform:rotate(8deg);background:var(--surface)}.icon-btn:active{transform:scale(.94)}.icon-btn svg{width:1.2rem}
+    .app{display:grid;grid-template-columns:minmax(19rem,.9fr) minmax(24rem,1.1fr);gap:var(--s8);align-items:stretch;margin-top:var(--s10)}
+    .panel{min-height:650px;border:1px solid var(--line);border-radius:var(--r-xl);background:color-mix(in srgb,var(--surface) 92%,transparent);box-shadow:var(--shadow);overflow:hidden;backdrop-filter:blur(12px)}
+    .info{display:flex;flex-direction:column;padding:clamp(var(--s6),4vw,var(--s10));text-align:left}
+    .eyebrow{display:inline-flex;align-items:center;gap:var(--s2);width:max-content;color:var(--accent);font-size:var(--text-xs);font-weight:700;letter-spacing:.13em;text-transform:uppercase}.eyebrow::before{content:"";width:1.4rem;height:2px;background:currentColor}
+    h1{margin-top:var(--s4);font:700 var(--text-2xl)/.98 var(--font-display);letter-spacing:-.035em;max-width:9ch}.sub{margin-top:var(--s5);max-width:36ch;color:var(--muted)}
+    .date-card{margin-top:auto;padding-top:var(--s10)}.date-row{display:flex;align-items:flex-end;justify-content:space-between;gap:var(--s4);padding-bottom:var(--s4);border-bottom:1px solid var(--line)}.date-label{font-size:var(--text-xs);color:var(--muted);text-transform:uppercase;letter-spacing:.1em}.date-value{margin-top:var(--s1);font-weight:700}.phase{display:inline-flex;align-items:center;gap:var(--s2);padding:var(--s2) var(--s3);border-radius:999px;background:var(--sage-soft);color:var(--sage);font-size:var(--text-xs);font-weight:700}.phase-dot{width:.5rem;height:.5rem;border-radius:50%;background:currentColor;animation:pulse 2s ease-in-out infinite}
+    .countdown{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--s2);margin-top:var(--s4)}.time{text-align:left}.time strong{display:block;font-size:var(--text-lg);font-variant-numeric:tabular-nums}.time span{font-size:var(--text-xs);color:var(--muted)}
+    .stage{position:relative;display:flex;flex-direction:column;min-height:650px;background:var(--surface-2)}
+    .stage::before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,transparent 49.7%,color-mix(in srgb,var(--ink) 4%,transparent) 50%,transparent 50.3%),linear-gradient(color-mix(in srgb,var(--surface) 32%,transparent),transparent 35%);background-size:5rem 100%,100% 100%;opacity:.55;pointer-events:none}
+    .dialogue{position:relative;z-index:8;min-height:206px;margin:var(--s6);padding:var(--s6);border:1px solid var(--line);border-radius:var(--r-lg);background:var(--surface);box-shadow:0 12px 34px rgb(67 44 28/.1);transform-origin:50% 100%;transition:opacity 220ms var(--ease),transform 300ms var(--ease)}.dialogue.swap{opacity:0;transform:scale(.97)}
+    .speaker{display:flex;align-items:center;justify-content:space-between;gap:var(--s4);font-size:var(--text-xs);font-weight:700;color:var(--accent);letter-spacing:.1em;text-transform:uppercase}.step-count{color:var(--faint);font-variant-numeric:tabular-nums}.question{margin-top:var(--s3);font:500 var(--text-xl)/1.12 var(--font-display);max-width:22ch}.reply{margin-top:var(--s3);color:var(--muted);max-width:52ch}.answers{display:flex;flex-wrap:wrap;gap:var(--s3);margin-top:var(--s5)}.answer{min-width:7.2rem;min-height:44px;padding:var(--s2) var(--s5);border:1px solid var(--line);border-radius:var(--r-md);background:var(--surface-2);font-size:var(--text-sm);font-weight:700;transition:transform 180ms var(--ease),background 180ms var(--ease),color 180ms var(--ease)}.answer.primary{color:white;background:var(--accent);border-color:var(--accent)}.answer:hover{transform:translateY(-2px);background:var(--ink);color:var(--surface)}.answer:active{transform:translateY(1px)}
+    .kitten-zone{position:relative;z-index:3;flex:1;min-height:390px;display:grid;place-items:end center;padding-bottom:var(--s8);overflow:hidden}.rug{position:absolute;bottom:1rem;width:min(84%,31rem);height:6.2rem;border-radius:50%;background:repeating-linear-gradient(90deg,color-mix(in srgb,var(--accent) 22%,var(--surface)) 0 1rem,color-mix(in srgb,var(--gold) 19%,var(--surface)) 1rem 2rem);border:1px solid var(--line);transform:perspective(250px) rotateX(58deg);box-shadow:0 18px 25px rgb(65 40 26/.12)}
+    .toy{position:absolute;right:9%;bottom:5.4rem;width:2.8rem;height:2.8rem;border-radius:50%;background:var(--gold);box-shadow:inset -.4rem -.5rem 0 color-mix(in srgb,var(--accent) 30%,transparent);cursor:grab;pointer-events:auto;animation:toyRoll 7s var(--ease) infinite}.toy::before,.toy::after{content:"";position:absolute;width:1.15rem;height:.35rem;border:2px solid var(--surface);border-left:0;border-right:0;transform:rotate(25deg)}.toy::before{left:.2rem;top:.6rem}.toy::after{right:.25rem;bottom:.55rem}.toy:active{cursor:grabbing;animation:none}
+    .cat-wrap{position:relative;width:250px;height:270px;transform-origin:50% 100%;animation:breathe 3.4s ease-in-out infinite;cursor:pointer;pointer-events:auto}.cat-wrap.pet-request{animation:arrival .8s var(--ease) both,breathe 3.4s .8s ease-in-out infinite}.cat-wrap.pet-request .front-paw.right{animation:reach 1.1s .8s var(--ease) infinite alternate}.cat-wrap.happy{animation:happy .65s var(--ease)}.cat-wrap.concerned .ear.left{transform:rotate(-38deg)}.cat-wrap.concerned .ear.right{transform:scaleX(-1) rotate(-38deg)}.cat-wrap.side-eye .pupil{transform:translate(4px,-1px)}
+    .tail{position:absolute;left:4px;bottom:43px;width:110px;height:125px;border:25px solid var(--cat);border-right:0;border-bottom-color:transparent;border-radius:70% 0 0 60%;transform-origin:100% 100%;animation:tail 2.6s ease-in-out infinite}.cat-body{position:absolute;left:68px;bottom:28px;width:135px;height:150px;border-radius:52% 52% 35% 35%;background:var(--cat);box-shadow:inset -17px -9px 0 color-mix(in srgb,var(--cat-dark) 28%,transparent)}.chest{position:absolute;left:34px;bottom:6px;width:69px;height:92px;border-radius:55% 55% 30% 30%;background:var(--cat-cream);opacity:.83}
+    .head{position:absolute;left:55px;top:28px;width:155px;height:137px;border-radius:48% 48% 43% 43%;background:var(--cat);box-shadow:inset -14px -7px 0 color-mix(in srgb,var(--cat-dark) 20%,transparent);transition:transform 220ms var(--ease)}.cat-wrap:hover .head{transform:translateY(-3px)}
+    .ear{position:absolute;top:-34px;width:68px;height:78px;background:var(--cat);clip-path:polygon(50% 0,100% 100%,0 100%);transform-origin:50% 90%;transition:transform 300ms var(--ease)}.ear.left{left:2px;transform:rotate(-13deg)}.ear.right{right:2px;transform:scaleX(-1) rotate(-13deg)}.ear::after{content:"";position:absolute;inset:20px 17px 8px;background:#d98b78;clip-path:inherit;opacity:.75}
+    .muzzle{position:absolute;left:45px;top:77px;width:67px;height:43px;border-radius:50%;background:var(--cat-cream)}.nose{position:absolute;left:27px;top:4px;width:14px;height:10px;background:#70403c;clip-path:polygon(0 0,100% 0,50% 100%)}.mouth{position:absolute;left:32px;top:14px;width:1px;height:12px;background:var(--cat-dark)}.mouth::before,.mouth::after{content:"";position:absolute;top:7px;width:19px;height:10px;border-bottom:2px solid var(--cat-dark);border-radius:50%}.mouth::before{right:0}.mouth::after{left:0}
+    .eye{position:absolute;top:58px;width:31px;height:31px;border-radius:50%;background:#dfb84c;overflow:hidden;box-shadow:0 0 0 3px color-mix(in srgb,var(--cat-dark) 38%,transparent);animation:blink 5.2s infinite}.eye.left{left:28px}.eye.right{right:28px}.pupil{position:absolute;left:10px;top:5px;width:11px;height:22px;border-radius:50%;background:#29221f;transition:transform 80ms linear}.pupil::after{content:"";position:absolute;left:2px;top:3px;width:3px;height:5px;border-radius:50%;background:white;opacity:.8}
+    .brow{position:absolute;top:45px;width:27px;height:7px;border-top:3px solid var(--cat-dark);border-radius:50%;opacity:0;transition:opacity 200ms,transform 200ms}.brow.left{left:27px}.brow.right{right:27px}.concerned .brow{opacity:1}.concerned .brow.left{transform:rotate(12deg)}.concerned .brow.right{transform:rotate(-12deg)}
+    .whiskers{position:absolute;top:94px;width:52px;height:30px}.whiskers.left{left:-29px}.whiskers.right{right:-29px;transform:scaleX(-1)}.whiskers i{display:block;width:54px;height:1px;margin:8px 0;background:var(--cat-dark);transform-origin:right}.whiskers i:first-child{transform:rotate(10deg)}.whiskers i:last-child{transform:rotate(-10deg)}
+    .front-paw{position:absolute;bottom:-55px;width:43px;height:87px;border-radius:45% 45% 38% 38%;background:var(--cat)}.front-paw.left{left:35px}.front-paw.right{right:35px}.front-paw::after{content:"";position:absolute;left:8px;bottom:8px;width:26px;height:9px;border-top:1px solid var(--cat-dark);border-radius:50%}
+    .status{position:absolute;left:var(--s5);bottom:var(--s5);display:flex;align-items:center;gap:var(--s2);font-size:var(--text-xs);color:var(--muted)}.status::before{content:"";width:.55rem;height:.55rem;border-radius:50%;background:var(--sage);box-shadow:0 0 0 .3rem color-mix(in srgb,var(--sage) 14%,transparent)}
+    .particle{position:fixed;z-index:30;pointer-events:none;font-size:1.15rem;color:var(--accent);animation:particle 1.1s var(--ease) forwards}.thought{position:absolute;z-index:6;right:var(--s5);bottom:13rem;max-width:12rem;padding:var(--s3) var(--s4);border-radius:var(--r-md) var(--r-md) var(--r-sm) var(--r-md);background:var(--surface);border:1px solid var(--line);font-size:var(--text-xs);box-shadow:0 8px 24px rgb(58 40 27/.1);opacity:0;transform:scale(.8);transition:opacity 250ms var(--ease),transform 300ms var(--ease)}.thought.show{opacity:1;transform:scale(1)}
+    @keyframes arrival{from{transform:translateY(7rem);opacity:0}to{transform:translateY(0);opacity:1}}@keyframes breathe{50%{transform:translateY(-5px)}}@keyframes reach{to{transform:translate(18px,-22px) rotate(-10deg)}}@keyframes tail{50%{transform:rotate(15deg)}}@keyframes blink{0%,43%,47%,100%{transform:scaleY(1)}45%{transform:scaleY(.08)}}@keyframes happy{35%{transform:translateY(-20px) rotate(-3deg)}70%{transform:translateY(-5px) rotate(3deg)}}@keyframes toyRoll{0%,70%,100%{transform:translateX(0) rotate(0)}80%{transform:translateX(-2.2rem) rotate(-110deg)}90%{transform:translateX(.8rem) rotate(30deg)}}@keyframes pulse{50%{opacity:.35}}@keyframes particle{to{transform:translate(var(--x),-90px) rotate(25deg);opacity:0}}
+    @media(max-width:780px){.shell{width:min(100% - 1rem,38rem);padding-top:5rem}.topbar{top:var(--s3)}.app{grid-template-columns:1fr;gap:var(--s4);margin-top:var(--s3)}.panel{min-height:auto}.info{min-height:390px}.stage{min-height:620px}.date-card{padding-top:var(--s8)}.plant{display:none}.dialogue{margin:var(--s4);min-height:226px}.question{font-size:var(--text-lg)}.answers{display:grid;grid-template-columns:1fr 1fr}.answer{min-width:0}.kitten-zone{min-height:370px}.status{display:none}}
+    @media(max-width:420px){.shell{width:calc(100% - .75rem)}.info{padding:var(--s6)}.countdown{gap:var(--s1)}.time strong{font-size:var(--text-base)}.dialogue{padding:var(--s5)}.answers{grid-template-columns:1fr}.cat-wrap{transform:scale(.9);margin-bottom:-.8rem}.panel{border-radius:var(--r-lg)}}
+    @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
   </style>
 </head>
-
 <body>
-  <div class="stars"></div>
+<a class="skip" href="#main">Skip to content</a>
+<div class="scene" aria-hidden="true"><div class="grain"></div><div class="sun"></div><div class="plant"><i class="leaf"></i><i class="leaf"></i><i class="leaf"></i></div></div>
+<main class="shell" id="main">
+  <header class="topbar">
+    <div class="brand">
+      <svg viewBox="0 0 32 32" fill="none" aria-label="Budget Watch logo"><path d="M8 13 5 5l8 5M24 13l3-8-8 5" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/><path d="M6 16c0-6 4-9 10-9s10 3 10 9-4 11-10 11S6 22 6 16Z" stroke="currentColor" stroke-width="2.3"/><path d="M12 17h.01M20 17h.01M14 21c1.3.8 2.7.8 4 0" stroke="currentColor" stroke-width="2.6" stroke-linecap="round"/></svg>
+      <span>Budget Watch</span>
+    </div>
+    <div class="tools"><button class="icon-btn" data-theme-toggle aria-label="Switch theme" title="Switch theme"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M21 12.8A9 9 0 1 1 11.2 3 7 7 0 0 0 21 12.8Z"/></svg></button></div>
+  </header>
 
-  <main class="container">
-    <section class="card">
-      <p class="label">Cat Calendar</p>
-
-      <h1>تا بیست‌وهفتم ماه</h1>
-
-      <p class="date-info" id="targetDate">
-        در حال محاسبه تاریخ مقصد...
-      </p>
-
-      <div class="countdown" aria-label="شمارش معکوس">
-        <div class="time-box">
-          <span class="number" id="days">۰۰</span>
-          <span class="unit">روز</span>
-        </div>
-
-        <div class="time-box">
-          <span class="number" id="hours">۰۰</span>
-          <span class="unit">ساعت</span>
-        </div>
-
-        <div class="time-box">
-          <span class="number" id="minutes">۰۰</span>
-          <span class="unit">دقیقه</span>
-        </div>
-
-        <div class="time-box">
-          <span class="number" id="seconds">۰۰</span>
-          <span class="unit">ثانیه</span>
+  <div class="app">
+    <section class="panel info" aria-labelledby="page-title">
+      <div><p class="eyebrow">Persian pay-cycle companion</p><h1 id="page-title">Your finances have a tiny Ghobad.</h1><p class="sub">A mildly concerned kitten, Mr. Ghobad, a countdown to the next 27th, and questions you may or may not want to answer.</p></div>
+      <div class="date-card">
+        <div class="date-row"><div><p class="date-label">Today</p><p class="date-value" id="todayDate">—</p></div><div class="phase"><i class="phase-dot"></i><span id="phaseLabel">Checking</span></div></div>
+        <div class="countdown" aria-label="Countdown to the next 27th at midnight">
+          <div class="time"><strong id="days">00</strong><span>days</span></div><div class="time"><strong id="hours">00</strong><span>hours</span></div><div class="time"><strong id="minutes">00</strong><span>minutes</span></div><div class="time"><strong id="seconds">00</strong><span>seconds</span></div>
         </div>
       </div>
-
-      <div class="cat-scene" aria-label="گربه متحرک">
-        <div class="moon"></div>
-        <div class="ground"></div>
-
-        <div class="cat" id="cat">
-          <div class="tail"></div>
-          <div class="body"></div>
-
-          <div class="head">
-            <div class="ear left"></div>
-            <div class="ear right"></div>
-
-            <div class="eye left">
-              <div class="pupil"></div>
-            </div>
-
-            <div class="eye right">
-              <div class="pupil"></div>
-            </div>
-
-            <div class="nose"></div>
-            <div class="mouth"></div>
-
-            <div class="whisker w1"></div>
-            <div class="whisker w2"></div>
-            <div class="whisker w3"></div>
-            <div class="whisker w4"></div>
-          </div>
-
-          <div class="paws">
-            <div class="paw"></div>
-            <div class="paw"></div>
-          </div>
-        </div>
-      </div>
-
-      <p class="footer-note">
-        گربه منتظر رسیدن روز بیست‌وهفتم است 🐾
-      </p>
     </section>
-  </main>
 
-  <script>
-    const persianMonths = [
-      "فروردین",
-      "اردیبهشت",
-      "خرداد",
-      "تیر",
-      "مرداد",
-      "شهریور",
-      "مهر",
-      "آبان",
-      "آذر",
-      "دی",
-      "بهمن",
-      "اسفند"
-    ];
+    <section class="panel stage" aria-label="Interactive kitten budget check-in">
+      <div class="dialogue" id="dialogue" aria-live="polite">
+        <div class="speaker"><span id="speaker">Your kitten</span><span class="step-count" id="stepCount">WAKING UP</span></div>
+        <h2 class="question" id="question">One moment...</h2><p class="reply" id="reply">I have reviewed the calendar. I have concerns.</p><div class="answers" id="answers"></div>
+      </div>
+      <div class="kitten-zone" id="kittenZone">
+        <div class="thought" id="thought">I can see the cursor, by the way.</div><div class="rug"></div><button class="toy" id="toy" aria-label="Move the kitten's yarn ball" title="Yarn ball"></button>
+        <div class="cat-wrap" id="cat" role="button" tabindex="0" aria-label="Pet the kitten">
+          <div class="tail"></div><div class="cat-body"><div class="chest"></div></div>
+          <div class="head"><div class="ear left"></div><div class="ear right"></div><div class="brow left"></div><div class="brow right"></div><div class="eye left"><i class="pupil"></i></div><div class="eye right"><i class="pupil"></i></div><div class="muzzle"><i class="nose"></i><i class="mouth"></i></div><div class="whiskers left"><i></i><i></i></div><div class="whiskers right"><i></i><i></i></div></div>
+          <div class="front-paw left"></div><div class="front-paw right"></div>
+        </div>
+        <p class="status" id="status">Online and judging quietly</p>
+      </div>
+    </section>
+  </div>
+</main>
+<script>
+(() => {
+  const $ = s => document.querySelector(s);
+  const cat = $('#cat'), dialogue = $('#dialogue'), question = $('#question'), reply = $('#reply'), answers = $('#answers');
+  const stepCount = $('#stepCount'), thought = $('#thought'), status = $('#status');
+  const months = ['Farvardin','Ordibehesht','Khordad','Tir','Mordad','Shahrivar','Mehr','Aban','Azar','Dey','Bahman','Esfand'];
+  let target, currentScenario = null, followUpIndex = 0, sessionCount = 0, lastScenario = -1, theme;
 
-    const numberFormatter = new Intl.NumberFormat("fa-IR", {
-      useGrouping: false
-    });
+  const formatter = new Intl.DateTimeFormat('en-US-u-ca-persian-nu-latn',{year:'numeric',month:'numeric',day:'numeric'});
+  function jalali(date){const v={};formatter.formatToParts(date).forEach(p=>{if(p.type!=='literal')v[p.type]=Number(p.value)});return {year:v.year,month:v.month,day:v.day}}
+  function findTarget(){const now=new Date();const d=new Date(now.getFullYear(),now.getMonth(),now.getDate(),0,0,0,0);for(let i=0;i<70;i++){if(jalali(d).day===27&&d>now)return new Date(d);d.setDate(d.getDate()+1)}return null}
+  function phaseFor(day){if(day<=6)return 'fresh';if(day<=13)return 'early';if(day<=18)return 'middle';if(day<=23)return 'late';return 'critical'}
+  const phaseNames={fresh:'Fresh start',early:'Early month',middle:'Mid-month',late:'Late month',critical:'Final stretch'};
+  const phaseIntros={fresh:'We are barely into the month.',early:'The month is still young.',middle:'We have crossed the halfway line.',late:'The 27th is close, but not that close.',critical:'We are in the final stretch.'};
 
-    function toEnglishDigits(value) {
-      return String(value)
-        .replace(/[۰-۹]/g, digit => "۰۱۲۳۴۵۶۷۸۹".indexOf(digit))
-        .replace(/[٠-٩]/g, digit => "٠١٢٣٤٥٦٧٨٩".indexOf(digit));
-    }
+  const scenarios = [
+    {p:['fresh','early'],q:'We are not even halfway through the month. Are we already spending like the 27th is tomorrow?',yes:['Bold strategy. Unfortunately, the calendar has evidence against you.','Then I am promoting myself from kitten to financial oversight.'],no:['Good. I will lower one eyebrow—but only one.','Excellent. Controlled spending. Very rare. Very elegant.'],f:[{q:'Have most purchases actually been necessary?',yes:'All right. I will record “mostly responsible” in very small letters.',no:'Thank you for your honesty. The cart and I need a private conversation.'},{q:'Could you do three quiet spending days?',yes:'Deal. I will guard the checkout button.',no:'I respect the honesty. I do not respect the plan.'}]},
+    {p:['fresh','early','middle'],q:'Have you been ordering food from outside more often lately?',yes:['I knew the kitchen looked suspiciously well-rested.','That explains the delivery notifications. Even I know the doorbell schedule now.'],no:['Then the mysterious food budget leak remains mysterious.','Good. The stove has not been abandoned.'],f:[{q:'Was it convenience, or did the food at home simply lose the election?',yes:'Convenience wins often. It is an expensive candidate.',no:'Fair. Even leftovers have limits.'},{q:'Could the next meal come from the kitchen?',yes:'Excellent. I will supervise from a safe distance.',no:'Understood. I will prepare my “we have food at home” face.'}]},
+    {p:['early','middle','late','critical'],q:'Do we seriously need to talk about that DigiPay debt?',yes:['Finally. I have prepared a meeting and no one invited me.','Good. Admitting it exists is cheaper than pretending it is decorative.'],no:['Interesting. The debt appears to disagree.','That was not the reassuring answer I had budgeted for.'],f:[{q:'Do you know the exact amount due?',yes:'Good. A known number is less frightening than a fog with interest.',no:'First mission: find the number. I will provide moral support and one judgmental stare.'},{q:'Can part of it be cleared before the next 27th?',yes:'That sounds like a plan. Plans are calming.',no:'Then no heroic spending until we can make one.'}]},
+    {p:['middle','late','critical'],q:'Should I be worried, or are you secretly more organized than you look?',yes:['Worried. Not panicked. There is an important difference.','All right. I will worry professionally so you can plan.'],no:['Secretly organized? A plot twist. I approve.','Fine. I will stop drafting my tiny emergency speech.'],f:[{q:'Could you name what is safe to spend until payday?',yes:'Excellent. A boundary. We love those now.',no:'Then that number is our next move—not another purchase.'}]},
+    {p:['late','critical'],q:'Are we going to starve before the next paycheck?',yes:['Concerning. I am small, but my appetite has legal representation.','Then groceries first. Everything shiny can wait.'],no:['Good. I prefer drama as a hobby, not a forecast.','Reassuring. I will return the emergency tuna brochure.'],f:[{q:'Are groceries already covered?',yes:'Then civilization may continue.',no:'Groceries become the priority. I am putting my paw down.'},{q:'Can we pause non-essential spending until then?',yes:'A sensible ending. Suspicious, but sensible.',no:'I admire the chaos. I cannot endorse it.'}]},
+    {p:['fresh','early','middle','late'],q:'Was the last big purchase planned, or did it simply happen to you?',yes:['Planned spending is still spending, but at least it wore a seatbelt.','Fine. I will allow the evidence to be presented.'],no:['Ah. An ambush purchase. Classic.','So the “Buy now” button moved first. Understood.'],f:[{q:'Would you buy it again today?',yes:'Then perhaps it mattered. Keep the receipt anyway.',no:'That answer arrived faster than the refund window.'}]},
+    {p:['early','middle','late','critical'],q:'Have small purchases been traveling in a suspiciously large group?',yes:['A flock of tiny expenses. Beautiful in nature, terrible in statements.','Small individually. A committee collectively.'],no:['Then one larger suspect may be responsible.','Good. The coins are behaving. For now.'],f:[{q:'Could you check the last seven days of transactions?',yes:'Excellent. I will wait here and practice looking neutral.',no:'Avoiding the statement does not make it less literate.'}]},
+    {p:['fresh','early','middle'],q:'Did a discount convince you to buy something you did not need?',yes:['You saved money by spending money. A timeless illusion.','The discount won. Your balance would like a rematch.'],no:['Excellent. The red SALE label has no power here.','Strong work. Marketing has been denied entry.'],f:[{q:'Can it still be returned?',yes:'A rare second chance. Take it before the box becomes furniture.',no:'Then it is tuition for a short course called “Not Every Deal.”'}]},
+    {p:['middle','late','critical'],q:'Are subscriptions quietly eating the food budget?',yes:['Tiny monthly bites. Extremely organized predators.','They always look harmless one at a time. So do kittens.'],no:['Good. At least the apps are not feeding on us.','One less shadow in the budget.'],f:[{q:'Is there one you have not used this month?',yes:'Cancel it with grace. It will pretend to miss you.',no:'Then they have earned another month—for now.'}]},
+    {p:['fresh','early','middle','late','critical'],q:'Did you buy something mainly because the day was stressful?',yes:['Understandable. But feelings have expensive taste.','A comfort purchase. I hope it was at least comfortable.'],no:['Healthy. Annoyingly healthy.','Good. The bad day did not get your card details.'],f:[{q:'Did it actually make the day better?',yes:'Then it bought a little relief. Just do not turn relief into a subscription.',no:'That is the rude part: the stress stayed and the money left.'}]},
+    {p:['early','middle','late'],q:'Have you been lending money while your own budget looks nervous?',yes:['Generous. Also risky. Your budget is hiding behind me.','Kind heart. Questionable timing.'],no:['Good. You cannot pour from an empty food bowl.','A boundary. I am proud and slightly shocked.'],f:[{q:'Do you know when it is coming back?',yes:'Put the date somewhere visible. Hope is not a repayment schedule.',no:'Then it was closer to a gift. Name it honestly.'}]},
+    {p:['fresh','early','middle','late','critical'],q:'If I opened your cart right now, would I find anything “for later”?',yes:['Later has excellent taste and no budget discipline.','The cart is not storage. It is a waiting room for temptation.'],no:['An empty cart. Peace has visited this home.','Remarkable restraint. I may nap.'],f:[{q:'Can it stay there for 48 hours?',yes:'Perfect. If it still matters later, we reconsider.',no:'The urgency sounds manufactured. Possibly by the website.'}]},
+    {p:['late','critical'],q:'Is there enough left for bills, groceries, and one minor surprise?',yes:['That is the answer I wanted. The minor surprise may not be a television.','Good. We remain solvent and mildly interesting.'],no:['Then we have no room for a major surprise wearing a discount sticker.','Time for the boring plan. Boring plans feed kittens.'],f:[{q:'Can we list the remaining essentials now?',yes:'Good. Numbers on paper behave better than numbers in the dark.',no:'Then I will keep staring until the list becomes appealing.'}]},
+    {p:['middle','late','critical'],q:'Have you checked your account balance today?',yes:['Brave. Information is useful even when it makes a face.','Good. Reality has been consulted.'],no:['The balance already knows. You may as well join it.','Not checking is peaceful right up until it is not.'],f:[{q:'Do you want the truth before the next purchase?',yes:'Excellent. Look first, decide second.',no:'I cannot stop you. I can, however, look deeply disappointed.'}]},
+    {p:['fresh','early','middle'],q:'Are you treating payday like a festival instead of a date?',yes:['The fireworks were lovely. The aftermath has receipts.','Celebration noted. Duration questionable.'],no:['Good. A calendar event, not a spending personality.','Very composed. Almost suspiciously so.'],f:[{q:'Did you save anything first?',yes:'Pay yourself first. Feed the kitten second. Sensible order.',no:'Next time, move a little before the money learns to wander.'}]},
+    {p:['early','middle','late'],q:'Did “free shipping” just cost us more money?',yes:['Free shipping: expensive item wearing a tiny fake mustache.','The shipping was free. The decision was not.'],no:['Excellent. We did not spend fifty to save five.','Mathematics survives another day.'],f:[{q:'Did you add something only to reach the minimum?',yes:'There it is. The unnecessary passenger.',no:'Then the original purchase must answer for itself.'}]},
+    {p:['middle','late','critical'],q:'Are you avoiding one bill because looking at it feels expensive?',yes:['Looking is free. Delay may not be.','Open it. I will sit beside you and blame the font.'],no:['Good. Bills are less dramatic under direct observation.','Responsible. I have no joke. This is unsettling.'],f:[{q:'Can you handle it today?',yes:'Do it, then enjoy the rare luxury of not thinking about it.',no:'Set a date. Vague dread is a terrible calendar.'}]},
+    {p:['fresh','early','middle','late','critical'],q:'Would future-you approve of this week’s spending?',yes:['Future-you sends a cautious nod from across time.','Then present-you may keep the keys.'],no:['Future-you has requested a meeting. No snacks provided.','A message from tomorrow: please stop making it interesting.'],f:[{q:'Can today-you fix one thing before bed?',yes:'Small repairs still count. Especially the ones actually done.',no:'Then tomorrow-you inherits both the problem and the attitude.'}]},
+    {p:['late','critical'],q:'Is the emergency fund about to become the “I wanted it” fund?',yes:['That is not an emergency. That is a desire in a tiny siren hat.','The fund has filed a complaint.'],no:['Good. Emergencies may remain boring and funded.','Excellent. The safety net remains a net.'],f:[{q:'Is this genuinely urgent?',yes:'Then use what you need, carefully and without guilt.',no:'Then step away from the emergency label.'}]},
+    {p:['fresh','early','middle','late'],q:'Have social plans been quietly setting the budget on fire?',yes:['Friendship is priceless. The taxis and dinners are not.','A lively social calendar. A pale bank balance.'],no:['A peaceful calendar can be financially elegant.','Good. Fun has remained within containment.'],f:[{q:'Could the next plan be cheaper and still good?',yes:'Exactly. People matter more than the receipt.',no:'Then choose the expensive moment on purpose—not by momentum.'}]},
+    {p:['middle','late','critical'],q:'Did you say “it is only once” more than once?',yes:['Several “once” events have formed a recurring series.','Once has become a franchise.'],no:['Consistent language. Encouraging.','Good. The loophole remains closed.'],f:[{q:'Could you skip the next one?',yes:'A plot twist the budget will enjoy.',no:'Then at least name the trade-off honestly.'}]},
+    {p:['fresh','early','middle','late','critical'],q:'Do you know where most of the money went this month?',yes:['Awareness: the least glamorous superpower.','Good. A budget cannot hide from someone who reads it.'],no:['Then the mystery is expensive enough to investigate.','The money left clues. Mostly timestamps.'],f:[{q:'Will you review the categories for five minutes?',yes:'Five minutes. No shame, just evidence.',no:'The mystery remains open, and I am requesting a detective hat.'}]},
+    {p:['late','critical'],q:'Do we need a no-spend day tomorrow?',yes:['Approved. We will enjoy the thrilling luxury of buying nothing.','A quiet day for the wallet. I will bring the naps.'],no:['Confident. I hope the numbers share your confidence.','Very well. Spend with the precision of a cat landing on a shelf.'],f:[{q:'Can coffee and delivery survive one day without you?',yes:'They will be brave. So will you.',no:'I see. We have identified the powerful interests involved.'}]},
+    {p:['fresh','early','middle'],q:'Did you budget for fun, or are we improvising again?',yes:['Excellent. Planned fun tastes better because guilt was not invited.','Look at you, scheduling joy responsibly.'],no:['Improvisation is charming until the statement arrives.','Then choose a limit before fun chooses one for you.'],f:[{q:'Can you set a number now?',yes:'A number turns chaos into a plan.',no:'Then chaos remains creative director.'}]}
+  ];
 
-    function getJalaliParts(date) {
-      const formatter = new Intl.DateTimeFormat(
-        "en-US-u-ca-persian-nu-latn",
-        {
-          year: "numeric",
-          month: "numeric",
-          day: "numeric"
-        }
-      );
+  function currentPhase(){return phaseFor(jalali(new Date()).day)}
+  function pickScenario(){const phase=currentPhase();const pool=scenarios.map((s,i)=>({s,i})).filter(x=>x.s.p.includes(phase)&&x.i!==lastScenario);const pick=pool[Math.floor(Math.random()*pool.length)]||{s:scenarios[0],i:0};lastScenario=pick.i;return pick.s}
+  function setMood(mood){cat.classList.remove('happy','concerned','side-eye');if(mood)cat.classList.add(mood);status.textContent=mood==='concerned'?'Concern level: one raised eyebrow':mood==='side-eye'?'Reviewing your answer':'Online and judging quietly'}
+  function transition(fn){dialogue.classList.add('swap');setTimeout(()=>{fn();dialogue.classList.remove('swap')},210)}
+  function buttons(items){answers.innerHTML='';items.forEach(({label,kind,onClick})=>{const b=document.createElement('button');b.className='answer'+(kind?' '+kind:'');b.textContent=label;b.addEventListener('click',onClick);answers.appendChild(b)})}
+  function beginCheck(){cat.classList.remove('pet-request');cat.classList.add('happy');burst(cat);setTimeout(()=>cat.classList.remove('happy'),700);currentScenario=pickScenario();followUpIndex=0;sessionCount++;transition(()=>{stepCount.textContent=`CHECK-IN ${sessionCount}`;question.textContent=phaseIntros[currentPhase()]+' '+currentScenario.q;reply.textContent='Answer honestly. I have already prepared a facial expression.';buttons([{label:'Yes',kind:'primary',onClick:()=>respond(true)},{label:'No',onClick:()=>respond(false)}])})}
+  function respond(value){const lines=value?currentScenario.yes:currentScenario.no;setMood(value?'concerned':'side-eye');transition(()=>{question.textContent=lines[Math.floor(Math.random()*lines.length)];reply.textContent=currentScenario.f?.[followUpIndex]?.q||'Would you like another question, or should we both pretend this was enough accountability?';if(currentScenario.f?.[followUpIndex]){const f=currentScenario.f[followUpIndex];buttons([{label:'Yes',kind:'primary',onClick:()=>follow(f,true)},{label:'No',onClick:()=>follow(f,false)}])}else finishButtons()})}
+  function follow(f,value){setMood(value?'happy':'side-eye');transition(()=>{question.textContent=value?f.yes:f.no;reply.textContent='That answer has been entered into the completely unofficial household record.';finishButtons()})}
+  function finishButtons(){buttons([{label:'Ask me another',kind:'primary',onClick:beginCheck},{label:'Pet the Ghobad',onClick:petCat}])}
+  function petCat(){cat.classList.remove('happy');void cat.offsetWidth;cat.classList.add('happy');burst(cat);setMood('happy');transition(()=>{stepCount.textContent='Ghobad BREAK';question.textContent=['Fine. One pet, then back to fiscal responsibility.','This does not erase the debt. It does improve morale.','A reasonable payment for my consulting services.','I accept affection in lieu of a written apology.'][Math.floor(Math.random()*4)];reply.textContent='The countdown continues. The kitten is temporarily satisfied.';finishButtons()});setTimeout(()=>cat.classList.remove('happy'),750)}
+  function intro(){cat.classList.add('pet-request');transition(()=>{stepCount.textContent='TINY REQUEST';question.textContent='Pet me. Then we need to talk about your spending.';reply.textContent=`It is ${phaseNames[currentPhase()].toLowerCase()}. I have questions.`;buttons([{label:'Pet the kitten',kind:'primary',onClick:beginCheck},{label:'Not now',onClick:()=>{setMood('side-eye');transition(()=>{question.textContent='Interesting. Avoiding both affection and accountability.';reply.textContent='I will be here when your courage returns.';buttons([{label:'Fine, one pet',kind:'primary',onClick:beginCheck}])})}}])})}
 
-      const parts = formatter.formatToParts(date);
-      const values = {};
+  function updateTime(){const now=new Date(),j=jalali(now);$('#todayDate').textContent=`${j.day} ${months[j.month-1]} ${j.year}`;$('#phaseLabel').textContent=phaseNames[phaseFor(j.day)];if(!target||target<=now)target=findTarget();const d=Math.max(0,target-now),day=Math.floor(d/864e5),h=Math.floor(d/36e5)%24,m=Math.floor(d/6e4)%60,s=Math.floor(d/1e3)%60;$('#days').textContent=String(day).padStart(2,'0');$('#hours').textContent=String(h).padStart(2,'0');$('#minutes').textContent=String(m).padStart(2,'0');$('#seconds').textContent=String(s).padStart(2,'0');document.title=`${day}d ${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')} · Budget Watch`}
+  function burst(el){const r=el.getBoundingClientRect();for(let i=0;i<5;i++){const p=document.createElement('i');p.className='particle';p.textContent=['✦','♡','·'][i%3];p.style.left=`${r.left+r.width/2+(Math.random()*40-20)}px`;p.style.top=`${r.top+r.height*.35}px`;p.style.setProperty('--x',`${Math.random()*100-50}px`);document.body.appendChild(p);setTimeout(()=>p.remove(),1200)}}
 
-      parts.forEach(part => {
-        if (part.type !== "literal") {
-          values[part.type] = Number(toEnglishDigits(part.value));
-        }
-      });
-
-      return {
-        year: values.year,
-        month: values.month,
-        day: values.day
-      };
-    }
-
-    /*
-      Finds the next local Gregorian midnight that corresponds to:
-      day 27 of a Persian/Jalali month.
-    */
-    function findNextPersian27th() {
-      const now = new Date();
-
-      let candidate = new Date(
-        now.getFullYear(),
-        now.getMonth(),
-        now.getDate(),
-        0,
-        0,
-        0,
-        0
-      );
-
-      for (let i = 0; i < 80; i++) {
-        const jalali = getJalaliParts(candidate);
-
-        if (jalali.day === 27 && candidate.getTime() > now.getTime()) {
-          return candidate;
-        }
-
-        candidate.setDate(candidate.getDate() + 1);
-      }
-
-      return null;
-    }
-
-    let targetDate = findNextPersian27th();
-
-    function formatPersianNumber(value) {
-      return numberFormatter.format(value);
-    }
-
-    function updateTargetText() {
-      if (!targetDate) return;
-
-      const jalali = getJalaliParts(targetDate);
-
-      document.getElementById("targetDate").textContent =
-        `مقصد: ساعت ۰۰:۰۰، ${formatPersianNumber(27)} ` +
-        `${persianMonths[jalali.month - 1]} ${formatPersianNumber(jalali.year)}`;
-    }
-
-    function updateTabTitle(days, hours, minutes, seconds) {
-      const h = String(hours).padStart(2, "0");
-      const m = String(minutes).padStart(2, "0");
-      const s = String(seconds).padStart(2, "0");
-
-      if (days > 0) {
-        document.title = `⌛ ${days}d ${h}:${m}:${s} | تا ۲۷م`;
-      } else {
-        document.title = `⌛ ${h}:${m}:${s} | تا ۲۷م`;
-      }
-    }
-
-    function updateCountdown() {
-      const now = new Date();
-
-      if (!targetDate || targetDate <= now) {
-        targetDate = findNextPersian27th();
-        updateTargetText();
-      }
-
-      const difference = Math.max(0, targetDate - now);
-
-      const days = Math.floor(
-        difference / (1000 * 60 * 60 * 24)
-      );
-
-      const hours = Math.floor(
-        (difference / (1000 * 60 * 60)) % 24
-      );
-
-      const minutes = Math.floor(
-        (difference / (1000 * 60)) % 60
-      );
-
-      const seconds = Math.floor(
-        (difference / 1000) % 60
-      );
-
-      document.getElementById("days").textContent =
-        formatPersianNumber(String(days).padStart(2, "0"));
-
-      document.getElementById("hours").textContent =
-        formatPersianNumber(String(hours).padStart(2, "0"));
-
-      document.getElementById("minutes").textContent =
-        formatPersianNumber(String(minutes).padStart(2, "0"));
-
-      document.getElementById("seconds").textContent =
-        formatPersianNumber(String(seconds).padStart(2, "0"));
-
-      updateTabTitle(days, hours, minutes, seconds);
-    }
-
-    /*
-      Cat cursor reaction:
-      The pupils follow the cursor only when it gets near the cat.
-    */
-    const cat = document.getElementById("cat");
-    const pupils = document.querySelectorAll(".pupil");
-
-    const REACTION_DISTANCE = 260;
-    const MAX_PUPIL_MOVE_X = 4;
-    const MAX_PUPIL_MOVE_Y = 5;
-
-    function resetCatEyes() {
-      pupils.forEach(pupil => {
-        pupil.style.transform = "translate(-50%, -50%)";
-      });
-
-      cat.classList.remove("is-watching");
-    }
-
-    document.addEventListener("mousemove", event => {
-      const catRect = cat.getBoundingClientRect();
-
-      const catCenterX = catRect.left + catRect.width / 2;
-      const catCenterY = catRect.top + catRect.height / 2;
-
-      const distanceX = event.clientX - catCenterX;
-      const distanceY = event.clientY - catCenterY;
-
-      const distance = Math.sqrt(
-        distanceX * distanceX +
-        distanceY * distanceY
-      );
-
-      if (distance > REACTION_DISTANCE) {
-        resetCatEyes();
-        return;
-      }
-
-      cat.classList.add("is-watching");
-
-      pupils.forEach(pupil => {
-        const eye = pupil.parentElement;
-        const eyeRect = eye.getBoundingClientRect();
-
-        const eyeCenterX = eyeRect.left + eyeRect.width / 2;
-        const eyeCenterY = eyeRect.top + eyeRect.height / 2;
-
-        const angle = Math.atan2(
-          event.clientY - eyeCenterY,
-          event.clientX - eyeCenterX
-        );
-
-        const moveX = Math.cos(angle) * MAX_PUPIL_MOVE_X;
-        const moveY = Math.sin(angle) * MAX_PUPIL_MOVE_Y;
-
-        pupil.style.transform =
-          `translate(calc(-50% + ${moveX}px), calc(-50% + ${moveY}px))`;
-      });
-    });
-
-    document.addEventListener("mouseleave", resetCatEyes);
-    document.addEventListener("touchend", resetCatEyes);
-
-    updateTargetText();
-    updateCountdown();
-
-    setInterval(updateCountdown, 1000);
-  </script>
+  document.addEventListener('pointermove',e=>{if(e.pointerType==='touch')return;const r=cat.getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height*.36,dist=Math.hypot(e.clientX-cx,e.clientY-cy);document.querySelectorAll('.eye').forEach(eye=>{const er=eye.getBoundingClientRect(),a=Math.atan2(e.clientY-(er.top+er.height/2),e.clientX-(er.left+er.width/2)),amount=dist<420?5:1;eye.querySelector('.pupil').style.transform=`translate(${Math.cos(a)*amount}px,${Math.sin(a)*amount}px)`});if(dist<170&&!thought.classList.contains('show')){thought.classList.add('show');setTimeout(()=>thought.classList.remove('show'),1700)}});
+  cat.addEventListener('click',()=>currentScenario?petCat():beginCheck());cat.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();currentScenario?petCat():beginCheck()}});
+  const toy=$('#toy');let dragging=false;toy.addEventListener('pointerdown',e=>{dragging=true;toy.setPointerCapture(e.pointerId)});toy.addEventListener('pointermove',e=>{if(!dragging)return;const z=$('#kittenZone').getBoundingClientRect();toy.style.left=`${Math.max(10,Math.min(z.width-55,e.clientX-z.left-22))}px`;toy.style.top=`${Math.max(40,Math.min(z.height-65,e.clientY-z.top-22))}px`;toy.style.right='auto';toy.style.bottom='auto'});toy.addEventListener('pointerup',()=>{dragging=false;cat.classList.add('happy');setTimeout(()=>cat.classList.remove('happy'),650)});
+  document.addEventListener('visibilitychange',()=>{if(!document.hidden){updateTime();thought.textContent='Back already? The budget did not fix itself.';thought.classList.add('show');setTimeout(()=>thought.classList.remove('show'),2200)}});
+  const toggle=$('[data-theme-toggle]');theme=matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light';document.documentElement.dataset.theme=theme;toggle.addEventListener('click',()=>{theme=theme==='dark'?'light':'dark';document.documentElement.dataset.theme=theme;toggle.setAttribute('aria-label',`Switch to ${theme==='dark'?'light':'dark'} mode`)});
+  updateTime();setInterval(updateTime,1000);setTimeout(intro,700);
+})();
+</script>
 </body>
 </html>
